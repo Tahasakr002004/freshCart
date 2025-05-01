@@ -1,21 +1,34 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRouter';
+import path from 'path';
+import { seedInitialProducts } from './services/productService';
+import productRouter from './routes/productRouter';
+
 
 const app = express();
 const port = 5000;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')));
 
+
+
+//middleware for routes
+app.use('/user', userRouter);
+app.use('/product', productRouter);
+
+///
 mongoose.connect('mongodb://localhost:27017/fresh-cart').then(() => {
-  
   console.log("Connected to MongoDB");
 }).catch((err) => {
   console.error("Error connecting to MongoDB", err);
 });
 
-app.use('/user', userRouter);
+//sedding initial products
+
+seedInitialProducts();
 
 ////express listening to port 3000
 app.listen(port, () => {
