@@ -16,9 +16,9 @@ app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')
 
 
 //middleware for routes
-app.use('/user', userRouter);
-app.use('/product', productRouter);
-app.use('/cart', cartRouter);
+app.use('/users', userRouter);
+app.use('/products', productRouter);
+app.use('/carts', cartRouter);
 
 ///
 mongoose.connect('mongodb://localhost:27017/fresh-cart').then(() => {

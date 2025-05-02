@@ -1,10 +1,10 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document,ObjectId } from "mongoose";
 import { IProduct } from "./productModel";
 
 
 
-export interface ICartItem extends Document {
-  product: IProduct;
+export interface ICartItem{
+  product: IProduct ;
   unitPrice: number;
   quantity: number;
 }
@@ -14,29 +14,25 @@ export interface ICartItem extends Document {
 
 
 export interface ICart extends Document {
-  userId:  string; // Assuming userId is a string or ObjectId
+  userId:  ObjectId | string; // Assuming userId is a string or ObjectId
   items: ICartItem[];
   totalAmount: number;
-  status: "active" | "completed" | "cancelled";
-  totalPrice: number;
+  status: "active" | "completed";
 }
 
 
 const cartItemSchema: Schema = new Schema<ICartItem>({
-  
-  product: { type: Schema.Types.ObjectId, ref: "product", required: true },
-  unitPrice: { type: Number, required: true },
-  quantity: { type: Number, required: true ,default: 1 },
 
+  product: { type: Schema.Types.ObjectId, ref: "product", required: true },
+  quantity: { type: Number, required: true ,default: 1 },
+  unitPrice: { type: Number, required: true },
 });
 
 const cartSchema: Schema = new Schema<ICart>({
-  userId: { type: String, ref:"user", required: true },
+  userId: { type: Schema.Types.ObjectId, ref:"user", required: true },
   items: [cartItemSchema],
-  totalAmount: { type: Number, default: 0 },
-  status: { type: String, enum: ["active", "completed", "cancelled"], default: "active" },
-  totalPrice: { type: Number, default: 0 },
+  totalAmount: { type: Number,required:true },
+  status: { type: String, enum: ["active", "completed"], default: "active" },
 });
 
-export const cartModel = mongoose.model<ICart>("cart", cartSchema);
-export const cartItemModel = mongoose.model<ICartItem>("cartItems", cartItemSchema);
+export const cartModel = mongoose.model<ICart>("carts", cartSchema);

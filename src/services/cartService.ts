@@ -1,5 +1,6 @@
 import { cartModel } from "../models/cartModel";
-
+import productModel  from "../models/productModel";
+import { ICart } from "../models/cartModel";
 
  interface CreateCartForUserRequest {
   userId: string; // Assuming userId is a string
@@ -7,13 +8,10 @@ import { cartModel } from "../models/cartModel";
 
 
 export const createCartForUser = async ({userId}: CreateCartForUserRequest) => {
-  try {
-    const cart = await cartModel.create({ userId });
+
+    const cart = await cartModel.create({ userId,totalAmount:0 });
     await cart.save(); // Save the cart to the database
     return cart;
-  } catch (error) {
-    throw new Error("Error creating cart for user: " + error);
-  }
 }
 
 ///////////////////////////////////////////////////////////////
@@ -29,4 +27,53 @@ export const getActiveCartForUser = async ({userId}:GetActiveCartRequest) => {
       cart = await createCartForUser({userId});
     }
     return cart;
+};
+
+
+interface AddItemToCartRequest {
+  productId: any;
+  quantity: number;
+  userId: string;
+
+}
+
+///////////////////////////////////////////////////////////////
+export const addItemToCart = async ({ userId, productId, quantity }: AddItemToCartRequest) => {
+ 
+  // call the cart of user 
+  const cart =  await getActiveCartForUser({ userId });
+
+
+  const existsInCart = cart.items.find((item) => item.product.toString() === productId);
+
+  if(existsInCart){
+   // existsInCart.quantity += quantity;
+    //await cart.save();
+    return { data: "Item already exists in the Cart",statusCode:400 }
+  }
+
+  // Fetch the product from the database
+  const product = await productModel.findById(productId);
+  if(!product) {
+    return { data: "Product not found",statusCode:400 }
+  }
+
+
+
+  // Update the product stock in the database
+  if (product.stock < quantity) {
+    return { data: "Not enough stock available", statusCode: 400 };
+  }
+
+
+  cart.items.push({
+    product: productId,
+    unitPrice: product.price,
+    quantity,
+  });
+
+  cart.totalAmount += product.price * quantity; // Update the total amount
+
+  const updatedCart = await cart.save();
+    return { data: updatedCart, statusCode: 201 };
 };
