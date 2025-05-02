@@ -1,5 +1,5 @@
 import express from 'express';
-import { getActiveCartForUser,addItemToCart,updateItemInCart } from '../services/cartService'; 
+import { getActiveCartForUser,addItemToCart,updateItemInCart,deleteItemInCart,clearCart } from '../services/cartService'; 
 import validateJWT  from '../middlewares/validateJWT';
 import { ExtendedRequest} from '../types/extendedRequest';
 
@@ -33,7 +33,7 @@ cartRouter.post('/items', validateJWT, async (req: ExtendedRequest, res) => {
 cartRouter.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
   const userId = req.user._id; 
   const { productId, quantity } = req.body; 
-  console.log(req.body);
+  // console.log(req.body);
   let response = await updateItemInCart({ userId, productId, quantity });
 
   if (!response) {
@@ -43,5 +43,26 @@ cartRouter.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
 
     res.status(200).send(response.data);
 });
+
+/////////////////////////////////////////////////////////////////////////////////////////
+cartRouter.delete('/items/:productId', validateJWT, async (req: ExtendedRequest, res) => {
+
+  const userId = req?.user?._id; // Assuming req.user contains the authenticated user's information
+  const {productId} = req.params;
+  console.log(userId,productId);
+   const response = await deleteItemInCart({ userId, productId });
+   res.status(response.statusCode).send(response.data);
+});
+
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//clear all cart
+cartRouter.delete('/', validateJWT, async (req: ExtendedRequest, res) => {
+  const userId = req.user._id; 
+  const response = await clearCart({ userId });
+  res.status(response.statusCode).send(response.data);
+});
+
+  
 
 export default cartRouter;
