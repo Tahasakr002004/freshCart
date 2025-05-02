@@ -1,7 +1,7 @@
 import userModel  from '../models/userModel';
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { ExtendedRequest } from '../types/extendedRequed';
+import { ExtendedRequest } from '../types/extendedRequest';
 
 
 

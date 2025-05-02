@@ -7,6 +7,7 @@ export interface ICartItem{
   product: IProduct ;
   unitPrice: number;
   quantity: number;
+  
 }
 
 
@@ -26,6 +27,7 @@ const cartItemSchema: Schema = new Schema<ICartItem>({
   product: { type: Schema.Types.ObjectId, ref: "product", required: true },
   quantity: { type: Number, required: true ,default: 1 },
   unitPrice: { type: Number, required: true },
+
 });
 
 const cartSchema: Schema = new Schema<ICart>({
@@ -34,5 +36,8 @@ const cartSchema: Schema = new Schema<ICart>({
   totalAmount: { type: Number,required:true },
   status: { type: String, enum: ["active", "completed"], default: "active" },
 });
+
+
+
 
 export const cartModel = mongoose.model<ICart>("carts", cartSchema);

@@ -12,7 +12,7 @@ const productSchema: Schema = new Schema({
   name: { type: String, required: true },
   price: { type: Number },
   imageUrl: { type: String },
-  stock: { type: Number },
+  stock: { type: Number ,default:10 },
 });
 
 const productModel = mongoose.model<IProduct>("products", productSchema);

@@ -1,9 +1,9 @@
 import express from 'express';
-import { getActiveCartForUser } from '../services/cartService'; // Adjust the import path as necessary
+import { getActiveCartForUser,addItemToCart,updateItemInCart } from '../services/cartService'; 
 import validateJWT  from '../middlewares/validateJWT';
-import { ExtendedRequest } from '../types/extendedRequed';
-import { addItemToCart } from '../services/cartService'; // Adjust the import path as necessary
-import { get } from 'mongoose';
+import { ExtendedRequest} from '../types/extendedRequest';
+
+
 
 const cartRouter = express.Router();
 
@@ -25,6 +25,23 @@ cartRouter.post('/items', validateJWT, async (req: ExtendedRequest, res) => {
   const response = await addItemToCart({ userId, productId, quantity });
   res.status(response.statusCode).send(response.data);
 
+});
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+cartRouter.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
+  const userId = req.user._id; 
+  const { productId, quantity } = req.body; 
+  console.log(req.body);
+  let response = await updateItemInCart({ userId, productId, quantity });
+
+  if (!response) {
+    res.status(500).send({ error: "Failed to update cart item." });
+    return;
+  }
+
+    res.status(200).send(response.data);
 });
 
 export default cartRouter;
