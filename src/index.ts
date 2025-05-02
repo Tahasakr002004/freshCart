@@ -4,7 +4,7 @@ import userRouter from './routes/userRouter';
 import path from 'path';
 import { seedInitialProducts } from './services/productService';
 import productRouter from './routes/productRouter';
-
+import cartRouter from './routes/cartRouter';
 
 const app = express();
 const port = 5000;
@@ -18,6 +18,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')
 //middleware for routes
 app.use('/user', userRouter);
 app.use('/product', productRouter);
+app.use('/cart', cartRouter);
 
 ///
 mongoose.connect('mongodb://localhost:27017/fresh-cart').then(() => {
@@ -27,7 +28,6 @@ mongoose.connect('mongodb://localhost:27017/fresh-cart').then(() => {
 });
 
 //sedding initial products
-
 seedInitialProducts();
 
 ////express listening to port 3000
