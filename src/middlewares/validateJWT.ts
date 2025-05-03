@@ -21,7 +21,7 @@ const validateJWT = (req:ExtendedRequest, res:Response, next:NextFunction) => {
     return;
   }
   // If token is valid, you can attach the decoded user information to the request Object
-  jwt.verify(token, '16C7AAD7E3593F22B89E6C1A3D89F', async (err, Payload) => {
+  jwt.verify(token, process.env.JWT_SECRET || '', async (err, Payload) => {
     if (err) {
       res.status(403).send('Invalid token');
       return;

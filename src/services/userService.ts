@@ -3,7 +3,6 @@ import  userModel  from "../models/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-
 interface RegisterData {
   firstName: string;
   lastName: string;
@@ -26,7 +25,7 @@ const generateJWT = (data:any) => {
   // The token is usually sent in the Authorization header of HTTP requests
   // The token is usually a long string of characters that is difficult to guess
 
-  return jwt.sign(data, "16C7AAD7E3593F22B89E6C1A3D89F");
+  return jwt.sign(data, process.env.JWT_SECRET || '');
 }
 
 
