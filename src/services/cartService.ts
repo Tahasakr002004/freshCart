@@ -1,14 +1,25 @@
 import { cartModel } from "../models/cartModel";
 import productModel  from "../models/productModel";
 import { ICart } from "../models/cartModel";
-
+import  orderModel  from "../models/orderModel";
+import { IOrderItem } from "../models/orderModel";
  interface CreateCartForUserRequest {
   userId: string; // Assuming userId is a string
 }
 
+///////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////
+const calculateTotalAmount = ({cart,productId}:{cart:ICart,productId:string}) => {
+
+  const otherCartItems = cart.items.filter((item) => item.product.toString() !== productId);
+  let total = otherCartItems.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
+  return total;
+} 
+/////////////////////////////////////////////////////////////////////////////////
+
+
 
 export const createCartForUser = async ({userId}: CreateCartForUserRequest) => {
-
     const cart = await cartModel.create({ userId,totalAmount:0 });
     await cart.save(); // Save the cart to the database
     return cart;
@@ -138,7 +149,6 @@ export const deleteItemInCart = async ({ userId, productId}:DeleteItemInCartRequ
   if (!existsInCart) {
     return { data: "Item not found in the cart", statusCode: 400 };
   }
-  
   const total = calculateTotalAmount({cart,productId});
   cart.totalAmount = total;
   const otherCartItems = cart.items.filter((item) => item.product.toString() !== productId);
@@ -164,14 +174,52 @@ export const clearCart = async ({ userId }: ClearCartRequest) => {
   return { data: updatedCart, statusCode: 200 };
 
 }
+///////////////////////crop_7_5///////////////////////
+interface CheckoutCartRequest{
+  userId: string;
+  address: string;
+}
+// Check out cart
+// i would transfer cart to order
+export const checkoutCart = async ({ userId, address }: CheckoutCartRequest) => {
+  
+  if(!address){
+    return {data: "Please add your address!",statusCode:400};
+  }
+  // Fetch the cart for the user
+  //Fetch data of the cart
+  const cart = await getActiveCartForUser({ userId });
 
+  const orderItems: IOrderItem[] = [];
 
+  //Loop cartItems and create orderItems
+  for(let item of cart.items){
+    const product = await productModel.findById(item.product);
+    if(!product) {
+      return { data: "Product not found",statusCode:400 }
+    }
+    const orderItem: IOrderItem = {
+      productTitle: product.name,
+      productImage: product.imageUrl,
+      quantity: item.quantity,
+      unitPrice: item.unitPrice
+    }
+    orderItems.push(orderItem);
+  }
+  // Create order with orderItems and totalAmount
+    const order =  await orderModel.create({
+      userId,
+      orderItems: orderItems,
+      totalAmount: cart.totalAmount,
+      address,
+    });
 
+  await order.save(); // Save the   order to the database
 
-///////////////////////////////////////////////////////////////
-const calculateTotalAmount = ({cart,productId}:{cart:ICart,productId:string}) => {
+  //update the cart.status to completed
+  cart.status = "completed";
+  await cart.save();
 
-  const otherCartItems = cart.items.filter((item) => item.product.toString() !== productId);
-  let total = otherCartItems.reduce((acc, item) => acc + item.unitPrice * item.quantity, 0);
-  return total;
-} 
+  return {data:order, statusCode:200};
+
+}
