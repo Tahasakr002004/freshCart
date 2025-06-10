@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-// Define the interface for the user model
-// This interface defines the structure of the user document in the MongoDB collection
+// Define an interface that extends mongoose's Document interface
 export interface IUser extends Document {
   firstName: string;
   lastName: string;

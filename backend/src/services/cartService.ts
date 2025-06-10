@@ -20,7 +20,7 @@ const calculateTotalAmount = ({cart,productId}:{cart:ICart,productId:string}) =>
 
 
 export const createCartForUser = async ({userId}: CreateCartForUserRequest) => {
-    const cart = await cartModel.create({ userId,totalAmount:0 });
+    const cart = await cartModel.create({ userId });
     await cart.save(); // Save the cart to the database
     return cart;
 }
