@@ -19,7 +19,7 @@ export interface CreateOrderForUser{
 export const checkout = async ({userId,address}:CreateOrderForUser) => {
   const cart = await getActiveCartForUser({ userId });
   if (!cart || cart.items.length === 0) {
-    return { data: 'Cart is empty', statusCode: 400 };
+    return { data: 'Cart is empty or your checkout is completed', statusCode: 400 };
   }
 
   // Check stock and reduce
@@ -42,6 +42,7 @@ export const checkout = async ({userId,address}:CreateOrderForUser) => {
   });
   await order.save();
   
+
   await clearCart({userId}); // clear user cart after order
   return { data: order, statusCode: 201 };
 };
