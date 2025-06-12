@@ -40,11 +40,19 @@ export const checkout = async ({userId,address}:CreateOrderForUser) => {
     status: 'pending',
     address,
   });
-
+  await order.save();
+  
   await clearCart({userId}); // clear user cart after order
   return { data: order, statusCode: 201 };
 };
 
+
+
+
+
+
+////////////////////////////////////////////////////
+//SHOW Order ITEMS
 export const showOrders = async (userId: string) => {
   try {
     const orders = await orderModel.find({ userId });
