@@ -31,11 +31,21 @@ export const checkout = async ({userId,address}:CreateOrderForUser) => {
     product.stock -= item.quantity;
     await product.save();
   }
-
+  // Fetch product names for each cart item
+  // Promise.all() runs all these database calls in parallel, so it’s faster than waiting for them one-by-one
+  const detailedItems = await Promise.all(cart.items.map(async (item) => {
+    const product = await productModel.findById(item.product);
+    return {
+      product: item.product,
+      productName: product?.name,
+      unitPrice: item.unitPrice,
+      quantity: item.quantity,
+    };
+  }));
   // Create order
   const order = await orderModel.create({
     userId,
-    items: cart.items,
+    items: detailedItems,
     totalAmount: cart.totalAmount,
     status: 'pending',
     address,
