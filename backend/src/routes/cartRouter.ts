@@ -65,10 +65,10 @@ cartRouter.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
 });
 
 /////////////////////////////////////////////////////////////////////////////////////////
+//DELETE ITEM IN Cart
 cartRouter.delete('/items/:productId', validateJWT, async (req: ExtendedRequest, res) => {
-
   try{
-    const userId = req?.user?._id; // Assuming req.user contains the authenticated user's information
+    const userId = req.user._id; // Assuming req.user contains the authenticated user's information
     const {productId} = req.params;
     console.log(userId,productId);
      const response = await deleteItemInCart({ userId, productId });

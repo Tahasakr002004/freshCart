@@ -1,11 +1,14 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
-import userRouter from './routes/userRouter';
 import path from 'path';
 import { seedInitialProducts } from './services/productService';
-import productRouter from './routes/productRouter';
-import cartRouter from './routes/cartRouter';
+import userRouter from "./routes/userRouter";
+import adminRouter from "./routes/adminRouter";
+import productRouter from "./routes/productRouter";
+import cartRouter from "./routes/cartRouter";
+import orderRouter from "./routes/orderRouter";
+
 
 dotenv.config();
 console.log(process.env.DATABASE_URL); //for testing
@@ -20,9 +23,11 @@ app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')
 
 
 //middleware for routes
-app.use('/users', userRouter);
-app.use('/products', productRouter);
-app.use('/carts', cartRouter);
+app.use('/admin', adminRouter); // Use the adminRouter for routes starting with /admin
+app.use('/user', userRouter); // Use the userRouter for routes starting with /users
+app.use('/product', productRouter); // Use the productRouter for routes starting with /products
+app.use('/cart', cartRouter); // Use the cartRouter for routes starting with /carts
+app.use('/order', orderRouter); // Use the cartRouter for routes starting with /carts
 
 ///
 mongoose.connect(process.env.DATABASE_URL || '').then(() => {

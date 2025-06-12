@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { cartModel } from "../models/cartModel";
 import productModel  from "../models/productModel";
 import { ICart } from "../models/cartModel";
@@ -42,9 +43,9 @@ export const getActiveCartForUser = async ({userId}:GetActiveCartRequest) => {
 
 
 interface AddItemToCartRequest {
-  productId: any;
-  quantity: number;
-  userId: string;
+  productId: any | string | mongoose.Types.ObjectId,
+  quantity: number,
+  userId:any | string | mongoose.Types.ObjectId
 
 }
 
@@ -93,10 +94,11 @@ export const addItemToCart = async ({ userId, productId, quantity }: AddItemToCa
 
 
 ///////////////////////////////////////////////////////////////
+// UPDATE THE CART
 interface UpdateItemInCartRequest {
-  productId: any;
-  quantity: number;
-  userId: string;
+  productId: any | string | mongoose.Types.ObjectId,
+  quantity: number,
+  userId:any | string | mongoose.Types.ObjectId
 }
 
 
@@ -113,9 +115,6 @@ export const updateItemInCart = async ({ userId, productId, quantity }: UpdateIt
   if(!product) {
     return { data: "Product not found",statusCode:400 }
   }
-
-
-
   existsInCart.quantity = quantity; // Update the quantity
 
   // Update the product stock in the database
@@ -136,8 +135,8 @@ export const updateItemInCart = async ({ userId, productId, quantity }: UpdateIt
 ///////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
 interface DeleteItemInCartRequest {
-  productId: any;
-  userId: string;
+   productId: any | string | mongoose.Types.ObjectId,
+   userId:any | string | mongoose.Types.ObjectId
 }
 
 export const deleteItemInCart = async ({ userId, productId}:DeleteItemInCartRequest) => {
@@ -161,7 +160,7 @@ export const deleteItemInCart = async ({ userId, productId}:DeleteItemInCartRequ
 
 
 interface ClearCartRequest {
-  userId: string;
+     userId:any | string | mongoose.Types.ObjectId
 }
 
 
@@ -175,51 +174,51 @@ export const clearCart = async ({ userId }: ClearCartRequest) => {
 
 }
 ///////////////////////crop_7_5///////////////////////
-interface CheckoutCartRequest{
-  userId: string;
-  address: string;
-}
-// Check out cart
-// i would transfer cart to order
-export const checkoutCart = async ({ userId, address }: CheckoutCartRequest) => {
+// interface CheckoutCartRequest{
+//    userId:any | string | mongoose.Types.ObjectId
+//   address: string;
+// }
+// // Check out cart
+// // i would transfer cart to order
+// export const checkoutCart = async ({ userId, address }: CheckoutCartRequest) => {
   
-  if(!address){
-    return {data: "Please add your address!",statusCode:400};
-  }
-  // Fetch the cart for the user
-  //Fetch data of the cart
-  const cart = await getActiveCartForUser({ userId });
+//   if(!address){
+//     return {data: "Please add your address!",statusCode:400};
+//   }
+//   // Fetch the cart for the user
+//   //Fetch data of the cart
+//   const cart = await getActiveCartForUser({ userId });
 
-  const orderItems: IOrderItem[] = [];
+//   const orderItems: IOrderItem[] = [];
 
-  //Loop cartItems and create orderItems
-  for(let item of cart.items){
-    const product = await productModel.findById(item.product);
-    if(!product) {
-      return { data: "Product not found",statusCode:400 }
-    }
-    const orderItem: IOrderItem = {
-      productTitle: product.name,
-      productImage: product.imageUrl,
-      quantity: item.quantity,
-      unitPrice: item.unitPrice
-    }
-    orderItems.push(orderItem);
-  }
-  // Create order with orderItems and totalAmount
-    const order =  await orderModel.create({
-      userId,
-      orderItems: orderItems,
-      totalAmount: cart.totalAmount,
-      address,
-    });
+//   //Loop cartItems and create orderItems
+//   for(let item of cart.items){
+//     const product = await productModel.findById(item.product);
+//     if(!product) {
+//       return { data: "Product not found",statusCode:400 }
+//     }
+//     const orderItem: IOrderItem = {
+//       productTitle: product.name,
+//       productImage: product.imageUrl,
+//       quantity: item.quantity,
+//       unitPrice: item.unitPrice
+//     }
+//     orderItems.push(orderItem);
+//   }
+//   // Create order with orderItems and totalAmount
+//     const order =  await orderModel.create({
+//       userId,
+//       orderItems: orderItems,
+//       totalAmount: cart.totalAmount,
+//       address,
+//     });
 
-  await order.save(); // Save the   order to the database
+//   await order.save(); // Save the   order to the database
 
-  //update the cart.status to completed
-  cart.status = "completed";
-  await cart.save();
+//   //update the cart.status to completed
+//   cart.status = "completed";
+//   await cart.save();
 
-  return {data:order, statusCode:200};
+//   return {data:order, statusCode:200};
 
-}
+// }
