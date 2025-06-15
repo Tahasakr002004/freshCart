@@ -1,4 +1,4 @@
-import userModel  from '../models/userModel';
+import userModel  from '../models/mongodb/userModel';
 import { Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { ExtendedRequest } from '../types/extendedRequest';

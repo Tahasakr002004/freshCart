@@ -1,7 +1,7 @@
 // import { CreateOrderForUser } from './orderService';
-import orderModel from '../models/orderModel';
+import orderModel from '../models/mongodb/orderModel';
 import { getActiveCartForUser,  clearCart } from './cartService';
-import productModel from '../models/productModel';
+import productModel from '../models/mongodb/productModel';
 import mongoose from 'mongoose';
 
 

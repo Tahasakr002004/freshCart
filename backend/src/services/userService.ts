@@ -1,5 +1,5 @@
 
-import  userModel  from "../models/userModel";
+import  userModel  from "../models/mongodb/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 

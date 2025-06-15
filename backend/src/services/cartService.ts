@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-import { cartModel } from "../models/cartModel";
-import productModel  from "../models/productModel";
-import { ICart } from "../models/cartModel";
-import  orderModel  from "../models/orderModel";
-import { IOrderItem } from "../models/orderModel";
+import { cartModel ,ICart } from "../models/mongodb/cartModel";
+import productModel  from "../models/mongodb/productModel";
+import  orderModel  from "../models/mongodb/orderModel";
+import { IOrderItem } from "../models/mongodb/orderModel";
  interface CreateCartForUserRequest {
   userId: string; // Assuming userId is a string
 }
@@ -173,52 +172,3 @@ export const clearCart = async ({ userId }: ClearCartRequest) => {
   return { data: updatedCart, statusCode: 200 };
 
 }
-///////////////////////crop_7_5///////////////////////
-// interface CheckoutCartRequest{
-//    userId:any | string | mongoose.Types.ObjectId
-//   address: string;
-// }
-// // Check out cart
-// // i would transfer cart to order
-// export const checkoutCart = async ({ userId, address }: CheckoutCartRequest) => {
-  
-//   if(!address){
-//     return {data: "Please add your address!",statusCode:400};
-//   }
-//   // Fetch the cart for the user
-//   //Fetch data of the cart
-//   const cart = await getActiveCartForUser({ userId });
-
-//   const orderItems: IOrderItem[] = [];
-
-//   //Loop cartItems and create orderItems
-//   for(let item of cart.items){
-//     const product = await productModel.findById(item.product);
-//     if(!product) {
-//       return { data: "Product not found",statusCode:400 }
-//     }
-//     const orderItem: IOrderItem = {
-//       productTitle: product.name,
-//       productImage: product.imageUrl,
-//       quantity: item.quantity,
-//       unitPrice: item.unitPrice
-//     }
-//     orderItems.push(orderItem);
-//   }
-//   // Create order with orderItems and totalAmount
-//     const order =  await orderModel.create({
-//       userId,
-//       orderItems: orderItems,
-//       totalAmount: cart.totalAmount,
-//       address,
-//     });
-
-//   await order.save(); // Save the   order to the database
-
-//   //update the cart.status to completed
-//   cart.status = "completed";
-//   await cart.save();
-
-//   return {data:order, statusCode:200};
-
-// }

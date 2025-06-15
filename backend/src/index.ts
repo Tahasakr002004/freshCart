@@ -1,10 +1,12 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
+import sequelize from './db/sequelize';
 import path from 'path';
 import { seedInitialProducts } from './services/productService';
 import userRouter from "./routes/userRouter";
 import adminRouter from "./routes/adminRouter";
+import adminproductRouter from "./routes/adminproductRouter";
 import productRouter from "./routes/productRouter";
 import cartRouter from "./routes/cartRouter";
 import orderRouter from "./routes/orderRouter";
@@ -23,18 +25,26 @@ app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')
 
 
 //middleware for routes
-app.use('/admin', adminRouter); // Use the adminRouter for routes starting with /admin
-app.use('/user', userRouter); // Use the userRouter for routes starting with /users
+app.use('/admin', adminRouter); 
+app.use('/admin', adminproductRouter); 
+app.use('/user', userRouter); 
 app.use('/product', productRouter); // Use the productRouter for routes starting with /products
-app.use('/cart', cartRouter); // Use the cartRouter for routes starting with /carts
-app.use('/order', orderRouter); // Use the cartRouter for routes starting with /carts
+app.use('/cart', cartRouter); 
+app.use('/order', orderRouter);
 
 ///
-mongoose.connect(process.env.DATABASE_URL || '').then(() => {
-  console.log("Connected to MongoDB");
-}).catch((err) => {
-  console.error("Error connecting to MongoDB", err);
-});
+export const connectDatabases = async () => {
+  try {
+    await mongoose.connect("mongodb://localhost:27017/fresh-cart");
+    console.log("Connected to MongoDB");
+
+    await sequelize.authenticate();
+    console.log("Connected to PostgreSQL");
+  } catch (err) {
+    console.error("Database connection failed", err);
+  }
+};
+connectDatabases();
 
 //sedding initial products
 seedInitialProducts();

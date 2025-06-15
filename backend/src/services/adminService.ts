@@ -1,63 +1,68 @@
-import adminModel, { IAdmin } from "../models/adminModel";
-import productModel from "../models/productModel";
-import { IProduct } from "../models/productModel";
+
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Admin from "../models/postgresql/adminModel";
+import { ExtendedRequestAdmin } from "../middlewares/validateAdminJWT";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 
-export const getAllAdmins = async () => {
-  try {
-    const admins = await adminModel.find();
-    return admins;
-  } catch (error) {
-    throw new Error("Error fetching admins");
+
+ const JWT_SECRETADMIN = process.env.JWT_SECRETADMIN || "F&PHB*Zn)CY&R:-qaH&g3KGOl!`i2f8!hGl/g?pwOFwYJ]'S41Nnmf>$.~^vDu9";
+
+
+// Register Admin
+export const registerAdminHandler = async (req: ExtendedRequestAdmin, res: any) => {
+  const { adminName, adminPassword } = req.body;
+
+  if (!adminName || !adminPassword) {
+    return res.status(400).json({ message: "Admin name and password are required." });
   }
+
+  // Check if admin already exists
+  const existingAdmin = await Admin.findOne({ where: { adminName } });
+  if (existingAdmin) {
+    return res.status(409).json({ message: "Admin already exists." });
+  }
+
+  // Hash password
+  const hashedPassword = await bcrypt.hash(adminPassword, 10);
+
+  // Create admin
+  const newAdmin = await Admin.create({ adminName, adminPassword: hashedPassword });
+
+  // Generate JWT token
+  const token = jwt.sign({ id: newAdmin.id, adminName: newAdmin.adminName },JWT_SECRETADMIN);
+
+  return res.status(201).json({
+    message: "Admin registered successfully",
+    admin: { id: newAdmin.id, adminName: newAdmin.adminName },
+    token
+  });
 };
 
-export const getAllProducts = async () => {
-  try {
-    const products = await productModel.find();
-    return products;
-  } catch (error) {
-    throw new Error("Error fetching products");
+// Login Admin
+export const loginAdminHandler = async (req: ExtendedRequestAdmin, res: any) => {
+  const { adminName, adminPassword } = req.body;
+
+  if (!adminName || !adminPassword) {
+    return res.status(400).json({ message: "Admin name and password are required." });
   }
-};
 
-// // Get product by ID
-// export const getProductById = async (id: string): Promise<IProduct | null> => {
-//   return productModel.findById(id).exec();
-// };
-
-
-
-
-const createProduct = async (productData: IProduct) => {
-  try {
-    const newProduct = new productModel(productData);
-    await newProduct.save();
-    return newProduct;
+  const admin = await Admin.findOne({ where: { adminName } });
+  if (!admin) {
+    return res.status(401).json({ message: "Invalid admin name or password." });
   }
-  catch (error) {
-    throw new Error("Error creating product");
+
+  // Compare password
+  const isPasswordValid = await bcrypt.compare(adminPassword, admin.adminPassword);
+  if (!isPasswordValid) {
+    return res.status(401).json({ message: "Invalid admin name or password." });
   }
-}
 
+  // Generate JWT
+  const token = jwt.sign({ id: admin.id, adminName: admin.adminName }, JWT_SECRETADMIN);
 
-export const addProduct = async (productData: any) => {
-  // Only admins call this to add products
-  return createProduct(productData);
-};
-
-
-
-
-// Update existing product
-export const updateProduct = async (
-  id: string,
-  updateData: Partial<IProduct>
-): Promise<IProduct | null> => {
-  return productModel.findByIdAndUpdate(id, updateData, { new: true }).exec();
-};
-
-// Delete product
-export const deleteProduct = async (id: string): Promise<IProduct | null> => {
-  return productModel.findByIdAndDelete(id).exec();
+  return res.status(200).json({ token });
 };

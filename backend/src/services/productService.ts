@@ -1,4 +1,4 @@
-import productModel from "../models/productModel";
+import productModel from "../models/mongodb/productModel";
 
 
 export const getAllProducts = async () => {
