@@ -1,4 +1,4 @@
-// routes/adminProductRouter.ts
+//Routing handling
 import express from "express";
 import {
   createProduct,

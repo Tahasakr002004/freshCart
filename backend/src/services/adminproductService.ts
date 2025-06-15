@@ -1,4 +1,4 @@
-// services/productService.ts
+//BUILD Bridge between ORM and ODM (postgresql and MONGODB) using EXPRESS
 import productModel from "../models/mongodb/productModel";
 import { Request, Response } from "express";
 
