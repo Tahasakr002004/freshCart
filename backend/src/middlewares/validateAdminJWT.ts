@@ -27,7 +27,7 @@ const validateAdminJWT = (req: ExtendedRequestAdmin, res: any, next: NextFunctio
 
   try {
     const decoded = jwt.verify(token, JWT_SECRETADMIN) as JwtPayload;
-    req.admin = decoded as JwtPayload;
+    req.admin = decoded;
     next();
   } catch (err) {
     return res.status(401).json({ message: "Invalid token." });
