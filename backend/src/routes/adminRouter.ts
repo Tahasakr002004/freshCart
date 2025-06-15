@@ -9,7 +9,7 @@ adminRouter.post("/registeradmin",
 adminRouter.post("/loginadmin",
   loginAdminHandler);
 
-// admin dashboard
+// admindashboard
 adminRouter.get("/dashboard", validateAdminJWT, (req:ExtendedRequestAdmin, res:any) => {
   res.json({ message: `Welcome to dashboard for  ${req.admin?.adminName}` });
 });

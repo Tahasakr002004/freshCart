@@ -32,7 +32,7 @@ export const registerAdminHandler = async (req: ExtendedRequestAdmin, res: any) 
   // Create admin
   const newAdmin = await Admin.create({ adminName, adminPassword: hashedPassword });
 
-  // Generate JWT token
+  // Generate JWT
   const token = jwt.sign({ id: newAdmin.id, adminName: newAdmin.adminName },JWT_SECRETADMIN);
 
   return res.status(201).json({

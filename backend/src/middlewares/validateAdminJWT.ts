@@ -11,7 +11,7 @@ interface JwtPayload {
   adminName: string;
 }
 
-// Extend Express's Request object
+//// Extend Express's Request object
 export interface ExtendedRequestAdmin extends Request {
   admin?: JwtPayload;
 }
