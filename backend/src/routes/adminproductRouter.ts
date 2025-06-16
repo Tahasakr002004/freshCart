@@ -5,7 +5,7 @@ import {
   updateProduct,
   deleteProduct,
   getAllProducts
-} from "../services/adminproductService";
+} from "../controllers/adminproductController";
 import validateAdminJWT from "../middlewares/validateAdminJWT";
 
 const adminproductRouter = express.Router();
