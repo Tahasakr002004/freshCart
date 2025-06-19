@@ -28,7 +28,7 @@ app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')
 app.use('/admin', adminRouter); 
 app.use('/admin', adminproductRouter); 
 app.use('/user', userRouter); 
-app.use('/product', productRouter); // Use the productRouter for routes starting with /products
+app.use('/product', productRouter); // Use the productRouter for routes starting with /product
 app.use('/cart', cartRouter); 
 app.use('/order', orderRouter);
 
@@ -49,7 +49,7 @@ connectDatabases();
 //sedding initial products
 seedInitialProducts();
 
-////express listening to port 3000
+////express listening to port 5000
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
