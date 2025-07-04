@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-login',
   standalone: false,
-  templateUrl: './login.html',
-  styleUrl: './login.scss'
+  templateUrl: './admin-login.html',
+  styleUrl: './admin-login.scss'
 })
-export class Login {
+export class AdminLogin {
 
 }
