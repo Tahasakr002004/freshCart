@@ -4,10 +4,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { ProductDetail } from './shop/product-detail/product-detail';
 
 @NgModule({
   declarations: [
-    App
+    App,
+    ProductDetail
   ],
   imports: [
     BrowserModule,
