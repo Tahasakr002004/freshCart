@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-dashboard',
   standalone: false,
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss'
+  templateUrl: './admin-dashboard.html',
+  styleUrl: './admin-dashboard.scss'
 })
-export class Dashboard {
+export class AdminDashboard {
 
 }

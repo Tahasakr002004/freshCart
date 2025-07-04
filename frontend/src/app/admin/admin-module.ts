@@ -3,17 +3,21 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing-module';
 import { Admin } from './admin';
-import { Login } from './login/login';
-import { Dashboard } from './dashboard/dashboard';
+import { AdminLogin } from './admin-login/admin-login';
+import { AdminDashboard } from './admin-dashboard/admin-dashboard';
 import { ProductEdit } from './product-edit/product-edit';
+import { AdminRegister } from './admin-register/admin-register';
+import { AddProduct } from './add-product/add-product';
 
 
 @NgModule({
   declarations: [
     Admin,
-    Login,
-    Dashboard,
-    ProductEdit
+    AdminLogin,
+    AdminDashboard,
+    ProductEdit,
+    AdminRegister,
+    AddProduct
   ],
   imports: [
     CommonModule,
