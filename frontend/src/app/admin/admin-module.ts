@@ -6,6 +6,7 @@ import { Admin } from './admin';
 import { AdminLogin } from './admin-login/admin-login';
 import { AdminDashboard } from './admin-dashboard/admin-dashboard';
 import { ProductEdit } from './product-edit/product-edit';
+import { AdminRegister } from './admin-register/admin-register';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { ProductEdit } from './product-edit/product-edit';
     Admin,
     AdminLogin,
     AdminDashboard,
-    ProductEdit
+    ProductEdit,
+    AdminRegister
   ],
   imports: [
     CommonModule,
