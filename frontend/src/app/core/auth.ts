@@ -4,18 +4,26 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  getToken(): string | null {
-    return localStorage.getItem('userToken') || localStorage.getItem('adminToken');
-  }
-
   getRole(): 'admin' | 'user' | null {
     if (localStorage.getItem('adminToken')) return 'admin';
     if (localStorage.getItem('userToken')) return 'user';
     return null;
+    
+  }
+  getUserToken(): string | null {
+    return localStorage.getItem('userToken');
   }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
+  getAdminToken(): string | null {
+    return localStorage.getItem('adminToken');
+  }
+
+  isUserLoggedIn(): boolean {
+    return !!this.getUserToken();
+  }
+
+  isAdminLoggedIn(): boolean {
+    return !!this.getAdminToken();
   }
 
   logout(): void {
