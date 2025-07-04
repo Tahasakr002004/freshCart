@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { UserRoutingModule } from './user-routing-module';
 import { User } from './user';
-import { Login } from './login/login';
+import { UserLogin } from './user-login/user-login';
 import { Profile } from './profile/profile';
 
 
 @NgModule({
   declarations: [
     User,
-    Login,
+    UserLogin,
     Profile
   ],
   imports: [
