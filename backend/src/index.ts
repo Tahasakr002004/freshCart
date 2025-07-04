@@ -10,6 +10,7 @@ import adminproductRouter from "./routes/adminproductRouter";
 import productRouter from "./routes/productRouter";
 import cartRouter from "./routes/cartRouter";
 import orderRouter from "./routes/orderRouter";
+import cors from 'cors';
 
 
 dotenv.config();
@@ -17,6 +18,11 @@ console.log(process.env.DATABASE_URL); //for testing
 
 const app = express();
 const port = 5000;
+
+app.use(cors({
+  origin: 'http://localhost:4200', // Angular dev server
+  credentials: true
+}));
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
