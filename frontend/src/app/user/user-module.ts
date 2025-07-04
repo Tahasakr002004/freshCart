@@ -6,6 +6,7 @@ import { User } from './user';
 import { UserLogin } from './user-login/user-login';
 import { Profile } from './profile/profile';
 import { UserRegister } from './user-register/user-register';
+import { Checkout } from './checkout/checkout';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { UserRegister } from './user-register/user-register';
     User,
     UserLogin,
     Profile,
-    UserRegister
+    UserRegister,
+    Checkout
   ],
   imports: [
     CommonModule,

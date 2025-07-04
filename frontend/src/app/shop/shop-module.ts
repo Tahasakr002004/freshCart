@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ShopRoutingModule } from './shop-routing-module';
 import { Shop } from './shop';
 import { ProductList } from './product-list/product-list';
-import { Cart } from './cart/cart';
+import { Cart } from '../user/cart/cart';
 
 
 @NgModule({

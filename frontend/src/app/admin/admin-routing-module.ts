@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Admin } from './admin';
 import { AdminLogin } from './admin-login/admin-login';
 import { AdminRegister } from './admin-register/admin-register';
 import { AdminDashboard } from './admin-dashboard/admin-dashboard';
