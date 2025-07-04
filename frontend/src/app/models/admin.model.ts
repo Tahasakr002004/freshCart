@@ -12,3 +12,11 @@ export interface AdminRegisterRequest {
     adminName: string;
     adminPassword: string;
 }
+
+export interface AdminLoginResponse {
+    token: string;
+}
+
+export interface AdminDashboardResponse {
+    message: string;
+}
