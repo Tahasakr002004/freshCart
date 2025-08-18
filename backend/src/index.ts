@@ -41,7 +41,7 @@ app.use('/order', orderRouter);
 ///
 export const connectDatabases = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/fresh-cart");
+    await mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/fresh-cart', {});
     console.log("Connected to MongoDB");
 
     await sequelize.authenticate();
@@ -57,5 +57,5 @@ seedInitialProducts();
 
 ////express listening to port 5000
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on http://localhost:${port}` || `Server is running on port ${port}`);
 });

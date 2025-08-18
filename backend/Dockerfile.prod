@@ -1,0 +1,21 @@
+# Production Dockerfile
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install only production dependencies
+COPY package*.json ./
+RUN npm install --only=production
+
+# Copy the source code
+COPY . .
+
+# Build TypeScript into dist folder
+RUN npm install typescript && npx tsc
+
+# Expose backend port
+EXPOSE 5000
+
+# Run compiled JavaScript
+CMD ["node", "dist/index.js"]

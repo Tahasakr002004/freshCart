@@ -1,0 +1,21 @@
+# Development Dockerfile
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies first (better caching)
+COPY package*.json ./
+RUN npm install
+
+# Copy rest of the source code
+COPY . .
+
+# Install dev dependencies like nodemon globally
+RUN npm install -g ts-node nodemon typescript
+
+# Expose backend port
+EXPOSE 5000
+
+# Start with nodemon for hot-reloading TypeScript
+CMD ["nodemon", "--watch", "src", "--ext", "ts", "--exec", "ts-node", "src/index.ts"]
