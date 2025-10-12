@@ -1,3 +1,4 @@
+
 # Stage 1: Build Angular app
 FROM node:20-alpine AS build
 
@@ -14,13 +15,14 @@ RUN npm install
 COPY . .
 
 # Build the Angular app in production mode
-RUN npm run build -- --output-path=dist/frontend-start --configuration production
+#RUN npm run build -- --output-path=dist/frontend-start --configuration production
+RUN npm run build -- --configuration=production
 
 # Stage 2: Serve with Nginx
 FROM nginx:alpine
 
 # Copy built Angular app from previous stage
-COPY --from=build /app/dist/frontend-start /usr/share/nginx/html
+COPY --from=build /app/dist/frontend-start/browser /usr/share/nginx/html
 
 # Copy custom Nginx config for SPA routing
 COPY nginx.conf /etc/nginx/conf.d/default.conf
