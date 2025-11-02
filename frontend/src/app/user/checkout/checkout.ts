@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-checkout',
   standalone: false,
   templateUrl: './checkout.html',
-  styleUrl: './checkout.scss'
+  styleUrl: './checkout.css',
 })
-export class Checkout {
-
-}
+export class Checkout {}

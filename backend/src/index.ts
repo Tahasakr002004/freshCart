@@ -14,7 +14,7 @@ import cors from 'cors';
 
 
 dotenv.config();
-console.log(process.env.DATABASE_URL); //for testing
+// console.log(process.env.DATABASE_URL); //for testing
 
 const app = express();
 const port = 5000;
@@ -41,13 +41,13 @@ app.use('/order', orderRouter);
 ///
 export const connectDatabases = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/fresh-cart', {});
+    await mongoose.connect(process.env.DATABASE_URL || 'mongodb://mongo:27017/fresh-cart', {});
     console.log("Connected to MongoDB");
 
     await sequelize.authenticate();
     console.log("Connected to PostgreSQL");
   } catch (err) {
-    console.error("Database connection failed", err);
+    console.error("Database connection failed",err);
   }
 };
 connectDatabases();
