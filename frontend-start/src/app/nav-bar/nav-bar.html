@@ -14,12 +14,17 @@
       </div>
 
       <!-- Center: Navigation Links -->
+      <div class="hidden md:flex space-x-6">
+        <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
+        <a routerLink="/sign-in" class="hover:text-gray-300">Sign In</a>
+        <a routerLink="/sign-up" class="hover:text-gray-300">Sign Up</a>
+      </div>
       <div class="flex space-x-8">
-        <a href="#" class="hover:text-blue-400 font-medium">Home</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Shop</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Checkout</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Cart</a>
-        <a href="#" class="hover:text-blue-400 font-medium">My Account</a>
+        <a routerLink="/sign-in" class="hover:text-blue-400 font-medium">Home</a>
+        <a routerLink="/sign-in" class="hover:text-blue-400 font-medium">Shop</a>
+        <a routerLink="/sign-in" class="hover:text-blue-400 font-medium">Checkout</a>
+        <a routerLink="/sign-in" class="hover:text-blue-400 font-medium">Cart</a>
+        <a routerLink="/sign-in" class="hover:text-blue-400 font-medium">My Account</a>
       </div>
 
       <!-- Right: Role Buttons -->
@@ -50,15 +55,15 @@
              <div
              class="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded-md shadow-lg z-50"
              >
-             <a href="#" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
-             <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100">Logout</a>
+             <a routerLink="/sign-in" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
+             <a routerLink="/sign-in" class="block px-4 py-2 text-red-600 hover:bg-gray-100">Logout</a>
             </div>
           }
         </div>
 
         <!-- User Button -->
         <a
-          href="#"
+          routerLink="/sign-in"
           class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
         >
           User
