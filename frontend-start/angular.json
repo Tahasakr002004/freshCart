@@ -81,15 +81,8 @@
         }
       }
     }
-<<<<<<< HEAD
-=======
   },
   "cli": {
-<<<<<<< HEAD
     "analytics": false
-=======
-    "analytics": "f8892425-09a6-434e-ab49-3e9d381962d4"
->>>>>>> 412e6ba (sign)
->>>>>>> frontend-auth
   }
 }
