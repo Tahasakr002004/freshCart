@@ -16,7 +16,11 @@ export interface LoginDto {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+<<<<<<< HEAD
   private readonly api = 'http://localhost:5000/user';
+=======
+  private readonly api = 'http://localhost:5050/user';
+>>>>>>> frontend-auth
   // minimal auth state with signals
   token = signal<string | null>(this.getToken());
 
