@@ -19,7 +19,7 @@ export class Shop implements OnInit {
   ngOnInit(): void {
     this.productService.getProducts().subscribe({
       next: (p) => {
-        this.products = p,
+        this.products = p;
         this.loading = false;
       },
       error: (err) => {
