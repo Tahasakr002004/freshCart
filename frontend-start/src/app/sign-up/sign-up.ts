@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -52,4 +50,3 @@ export class SignUp {
     });
   }
 }
->>>>>>> 412e6ba (sign)
