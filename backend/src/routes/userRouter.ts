@@ -49,7 +49,7 @@ userRouter.post('/login', async (req: Request, res: Response): Promise<void> => 
   }
 });
 
-// 🔐 Token prüfen: existiert der User zu diesem Token noch?
+//  Token prüfen: existiert der User zu diesem Token noch?
 userRouter.get('/verify', async (req: Request, res: Response): Promise<void> => {
   try {
     const header =
