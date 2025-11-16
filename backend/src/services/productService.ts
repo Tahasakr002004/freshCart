@@ -29,7 +29,7 @@ export const seedInitialProducts = async () => {
       name: "Banana",
       price: 12.99,
       imageUrl: "/public/freshcartImages/apple_2.jpg",
-      stock: 50
+      stock: 0
     },
     {
       name: "Apple",
