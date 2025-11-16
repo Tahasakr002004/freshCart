@@ -1,4 +1,4 @@
-<div class="group relative">
+<div class="group relative cursor-pointer" [routerLink]="['/product', product._id]">
   <img
     [src]="product.imageUrl"
     [alt]="product.name"
@@ -7,10 +7,10 @@
   <div class="mt-4 flex justify-between">
     <div>
       <h3 class="text-sm text-gray-700">
-        <a href="#">
+        <span>
           <span aria-hidden="true" class="absolute inset-0"></span>
           {{ product.name }}
-        </a>
+        </span>
       </h3>
       <p class="mt-1 text-sm text-gray-500">
         {{ product.stock > 0 ? (product.stock + ' in stock') : 'Out of stock' }}
