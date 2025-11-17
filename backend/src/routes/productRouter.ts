@@ -1,6 +1,5 @@
 import express from 'express';
-import { getAllProducts, getProductById } from '../services/productService'; // Adjust the import path as necessary
-
+import { getAllProducts, getProductById } from '../services/productService';
 
 const productRouter = express.Router();
 
@@ -14,11 +13,13 @@ productRouter.get('/', async (req, res) => {
 }
 );
 
-
-
-
-
-
-
+productRouter.get('/:id', async (req, res) => {
+  try {
+    const product = await getProductById(req.params.id);
+    res.status(200).send(product);
+  } catch (error) {
+    res.status(404).send({ message: 'Product not found' });
+  }
+});
 
 export default productRouter;
