@@ -1,17 +1,18 @@
 <div class="bg-white">
-  @if (loading) {
+  @if (loading()) {
     <div class="mx-auto max-w-2xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:max-w-7xl lg:px-8 text-gray-500">Loading product…</div>
-  } @else if (error) {
-    <div class="mx-auto max-w-2xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:max-w-7xl lg:px-8 text-red-600">{{ error }}</div>
-  } @else if (product) {
+  } @else if (error()) {
+    <div class="mx-auto max-w-2xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:max-w-7xl lg:px-8 text-red-600">{{ error() }}</div>
+  } @else if (product()) {
     <div class="mx-auto max-w-2xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:max-w-7xl lg:px-8">
+      @let p = product()!;
       <div class="grid gap-8 lg:grid-cols-2 lg:gap-12 items-start">
         <!-- Product image -->
         <div class="w-full">
           <div class="aspect-square w-full overflow-hidden rounded-md bg-gray-200">
             <img
-              [src]="product.imageUrl"
-              [alt]="product.name"
+              [src]="p.imageUrl"
+              [alt]="p.name"
               class="h-full w-full object-cover"
             />
           </div>
@@ -20,12 +21,12 @@
         <!-- Product details -->
         <div>
           <h1 class="text-2xl font-bold tracking-tight text-gray-900">
-            {{ product.name }}
+            {{ p.name }}
           </h1>
           <div class="mt-2 flex items-baseline gap-3">
-            <p class="text-xl font-semibold text-gray-900">${{ product.price }}</p>
+            <p class="text-xl font-semibold text-gray-900">${{ p.price }}</p>
             <p class="text-sm text-gray-500">
-              {{ product.stock > 0 ? (product.stock + ' in stock') : 'Out of stock' }}
+              {{ p.stock > 0 ? (p.stock + ' in stock') : 'Out of stock' }}
             </p>
           </div>
 
@@ -38,15 +39,15 @@
                 #qty
                 type="number"
                 min="1"
-                [max]="product.stock"
+                [max]="p.stock"
                 value="1"
                 class="block w-24 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                [disabled]="product.stock === 0"
+                [disabled]="p.stock === 0"
               />
               <button
                 type="button"
                 class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                [disabled]="product.stock === 0"
+                [disabled]="p.stock === 0"
               >
                 Add to cart
               </button>

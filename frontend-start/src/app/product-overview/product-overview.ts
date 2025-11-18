@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product';
@@ -10,37 +10,47 @@ import { ProductService } from '../services/product';
   styleUrl: './product-overview.css'
 })
 export class ProductOverview implements OnInit {
-  @Input() product!: Product; // if provided from a parent, it will be used
-  loading = true;
-  error = '';
+  // Signals
+  product = signal<Product | null>(null);
+  loading = signal(true);
+  error = signal('');
+
+  // Accept optional product from parent and write to signal
+  @Input('product') set productInput(value: Product | null | undefined) {
+    if (value) {
+      this.product.set(value);
+      this.error.set('');
+      this.loading.set(false);
+    }
+  }
 
   constructor(private route: ActivatedRoute, private productService: ProductService) {}
 
   ngOnInit(): void {
     // If product not provided via @Input, fetch it via route
-    if (!this.product) {
+    if (!this.product()) {
       this.route.paramMap.subscribe(params => {
         const id = params.get('id');
         if (!id) {
-          this.error = 'Invalid product id';
-          this.loading = false;
+          this.error.set('Invalid product id');
+          this.loading.set(false);
           return;
         }
-        this.loading = true;
+        this.loading.set(true);
         this.productService.getProduct(id).subscribe({
           next: (p) => {
-            this.product = p;
-            this.loading = false;
+            this.product.set(p);
+            this.loading.set(false);
           },
           error: (err) => {
             console.error('Failed to load product', err);
-            this.error = 'Failed to load product';
-            this.loading = false;
+            this.error.set('Failed to load product');
+            this.loading.set(false);
           }
         });
       });
     } else {
-      this.loading = false;
+      this.loading.set(false);
     }
   }
 }
