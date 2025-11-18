@@ -12,10 +12,11 @@ type TokenPayload = JwtPayload & {
 const userRouter = express.Router();
 
 // einfache Test-Route
-userRouter.get('/', (req: Request, res: Response): void => {
+userRouter.get('/', (_req: Request, res: Response): void => {
   try {
     res.send('User route is working!');
   } catch (error) {
+    console.error('Error in /user:', error);
     res.status(500).send({ message: 'Error fetching user route' });
   }
 });
@@ -24,16 +25,25 @@ userRouter.get('/', (req: Request, res: Response): void => {
 userRouter.post('/register', async (req: Request, res: Response): Promise<void> => {
   try {
     const { firstName, lastName, email, password } = req.body;
+
     const { statusCode, data } = await register({
       firstName,
       lastName,
       email,
       password,
     });
-    res.status(statusCode).send(data);
+
+    // Falls register() einen Fehlerstatus zurückgibt → 1:1 durchreichen
+    if (statusCode !== 200) {
+      res.status(statusCode).send(data);
+      return;
+    }
+
+    // Für das Frontend: 201 + reine Text-Nachricht
+    res.status(201).send('Benutzer erfolgreich registriert');
   } catch (error) {
     console.error('Error in /user/register:', error);
-    res.status(500).send({ message: 'Error registering user' });
+    res.status(500).send('Error registering user');
   }
 });
 
@@ -41,15 +51,18 @@ userRouter.post('/register', async (req: Request, res: Response): Promise<void> 
 userRouter.post('/login', async (req: Request, res: Response): Promise<void> => {
   try {
     const { email, password } = req.body;
+
     const { statusCode, data } = await login({ email, password });
+
+    // data ist bei Erfolg der Token (String), sonst Fehlermeldung
     res.status(statusCode).send(data);
   } catch (error) {
     console.error('Error in /user/login:', error);
-    res.status(500).send({ message: 'Error logging in user' });
+    res.status(500).send('Error logging in user');
   }
 });
 
-//  Token prüfen: existiert der User zu diesem Token noch?
+// Token prüfen: existiert der User zu diesem Token noch?
 userRouter.get('/verify', async (req: Request, res: Response): Promise<void> => {
   try {
     const header =
@@ -83,8 +96,10 @@ userRouter.get('/verify', async (req: Request, res: Response): Promise<void> => 
       return;
     }
 
+    
     res.status(200).send({
-      data: {
+      user: {
+        id: (user as any)._id?.toString?.() ?? (user as any).id,
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,

@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('token'); // WICHTIG: gleicher Key wie im AuthService
+  const token = localStorage.getItem('token'); // gleicher Key!
 
   if (token) {
     req = req.clone({

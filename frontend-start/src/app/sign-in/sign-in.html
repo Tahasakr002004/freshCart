@@ -1,3 +1,4 @@
+<!-- src/app/sign-in/sign-in.html -->
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
@@ -9,32 +10,38 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
       <!-- E-Mail -->
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-900">E-Mail-Adresse</label>
+        <label for="email" class="block text-sm font-medium text-gray-900"
+          >E-Mail-Adresse</label
+        >
         <input
           id="email"
           type="email"
           formControlName="email"
-          required
-          autocomplete="email"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        <p *ngIf="f.email.touched && f.email.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.email.touched && f.email.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Bitte gib eine gültige E-Mail-Adresse ein
         </p>
       </div>
 
       <!-- Passwort -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-900">Passwort</label>
+        <label for="password" class="block text-sm font-medium text-gray-900"
+          >Passwort</label
+        >
         <input
           id="password"
           type="password"
           formControlName="password"
-          required
-          autocomplete="current-password"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        <p *ngIf="f.password.touched && f.password.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.password.touched && f.password.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Passwort ist erforderlich (mind. 6 Zeichen)
         </p>
       </div>
@@ -58,7 +65,12 @@
 
     <p class="mt-4 text-center text-sm">
       Noch kein Konto?
-      <a routerLink="/sign-up" class="font-medium text-indigo-600 hover:text-indigo-500">Registrieren</a>
+      <a
+        routerLink="/sign-up"
+        class="font-medium text-indigo-600 hover:text-indigo-500"
+      >
+        Registrieren
+      </a>
     </p>
   </div>
 </div>

@@ -1,4 +1,7 @@
-<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<!-- src/app/sign-up/sign-up.html -->
+<div
+  class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+>
   <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-md">
     <div>
       <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
@@ -6,7 +9,10 @@
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600">
         Bereits registriert?
-        <a routerLink="/sign-in" class="font-medium text-indigo-600 hover:text-indigo-500">
+        <a
+          routerLink="/sign-in"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
+        >
           Hier anmelden
         </a>
       </p>
@@ -15,79 +21,95 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
       <!-- Vorname -->
       <div>
-        <label for="firstName" class="block text-sm font-medium text-gray-700">Vorname</label>
+        <label for="firstName" class="block text-sm font-medium text-gray-700"
+          >Vorname</label
+        >
         <input
           id="firstName"
           type="text"
           formControlName="firstName"
-          autocomplete="given-name"
           class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Max"
         />
-        <p *ngIf="f.firstName.touched && f.firstName.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.firstName.touched && f.firstName.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Vorname ist erforderlich (mind. 2 Zeichen)
         </p>
       </div>
 
       <!-- Nachname -->
       <div>
-        <label for="lastName" class="block text-sm font-medium text-gray-700">Nachname</label>
+        <label for="lastName" class="block text-sm font-medium text-gray-700"
+          >Nachname</label
+        >
         <input
           id="lastName"
           type="text"
           formControlName="lastName"
-          autocomplete="family-name"
           class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="Mustermann"
         />
-        <p *ngIf="f.lastName.touched && f.lastName.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.lastName.touched && f.lastName.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Nachname ist erforderlich (mind. 2 Zeichen)
         </p>
       </div>
 
       <!-- E-Mail -->
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-700">E-Mail-Adresse</label>
+        <label for="email" class="block text-sm font-medium text-gray-700"
+          >E-Mail-Adresse</label
+        >
         <input
           id="email"
           type="email"
           formControlName="email"
-          autocomplete="email"
           class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="max.mustermann@example.com"
         />
-        <p *ngIf="f.email.touched && f.email.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.email.touched && f.email.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Bitte gib eine gültige E-Mail-Adresse ein
         </p>
       </div>
 
       <!-- Passwort -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-700">Passwort</label>
+        <label for="password" class="block text-sm font-medium text-gray-700"
+          >Passwort</label
+        >
         <input
           id="password"
           type="password"
           formControlName="password"
-          autocomplete="new-password"
           class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
           placeholder="••••••••"
         />
-        <p *ngIf="f.password.touched && f.password.invalid" class="text-red-600 text-sm mt-1">
+        <p
+          *ngIf="f.password.touched && f.password.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
           Passwort ist erforderlich (mind. 6 Zeichen)
         </p>
       </div>
 
-      <!-- Backend-Fehlermeldung -->
+      <!-- Backend-Fehler -->
       <div *ngIf="error" class="text-red-600 text-sm">
         {{ error }}
       </div>
 
-      <!-- Submit-Button -->
+      <!-- Button -->
       <div>
         <button
           type="submit"
           [disabled]="submitting"
-          class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-60"
+          class="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60"
         >
           {{ submitting ? 'Registriere...' : 'Registrieren' }}
         </button>

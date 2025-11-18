@@ -1,20 +1,23 @@
 <nav class="bg-gray-800 text-white shadow-md">
   <div class="max-w-7xl mx-auto px-6">
     <div class="flex h-16 items-center justify-between">
-      <!-- Logo -->
+      <!-- Logo / Brand -->
       <div class="flex items-center space-x-2">
         <span class="text-xl font-semibold">FreshCart</span>
       </div>
 
-      <!-- Links -->
-      <div class="flex space-x-6 items-center">
+      <!-- Navigation / Auth -->
+      <div class="flex items-center space-x-6">
+        <!-- Immer sichtbare Links -->
         <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
 
+        <!-- Nicht eingeloggt -->
         <ng-container *ngIf="!isLoggedIn; else loggedIn">
           <a routerLink="/sign-in" class="hover:text-gray-300">Sign In</a>
           <a routerLink="/sign-up" class="hover:text-gray-300">Sign Up</a>
         </ng-container>
 
+        <!-- Eingeloggt -->
         <ng-template #loggedIn>
           <span class="text-sm text-gray-300" *ngIf="user">
             {{ user.firstName }} {{ user.lastName }}
