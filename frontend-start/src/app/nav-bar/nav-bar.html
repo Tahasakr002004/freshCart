@@ -10,11 +10,13 @@
       <div class="flex space-x-6 items-center">
         <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
 
+        <!-- Wenn NICHT eingeloggt -->
         <ng-container *ngIf="!isLoggedIn; else loggedIn">
           <a routerLink="/sign-in" class="hover:text-gray-300">Sign In</a>
           <a routerLink="/sign-up" class="hover:text-gray-300">Sign Up</a>
         </ng-container>
 
+        <!-- Wenn eingeloggt -->
         <ng-template #loggedIn>
           <span class="text-sm text-gray-300" *ngIf="user">
             {{ user.firstName }} {{ user.lastName }}

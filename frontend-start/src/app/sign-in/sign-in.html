@@ -10,43 +10,37 @@
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
       <!-- E-Mail -->
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-900"
-          >E-Mail-Adresse</label
-        >
+        <label for="email" class="block text-sm font-medium text-gray-900">
+          E-Mail-Adresse
+        </label>
         <input
           id="email"
           type="email"
           formControlName="email"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        <p
-          *ngIf="f.email.touched && f.email.invalid"
-          class="text-red-600 text-sm mt-1"
-        >
-          Bitte gib eine gültige E-Mail-Adresse ein
+        <p *ngIf="f.email.touched && f.email.invalid" class="text-red-600 text-sm mt-1">
+          Bitte gib eine gültige E-Mail-Adresse ein.
         </p>
       </div>
 
       <!-- Passwort -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-900"
-          >Passwort</label
-        >
+        <label for="password" class="block text-sm font-medium text-gray-900">
+          Passwort
+        </label>
         <input
           id="password"
           type="password"
           formControlName="password"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        <p
-          *ngIf="f.password.touched && f.password.invalid"
-          class="text-red-600 text-sm mt-1"
-        >
-          Passwort ist erforderlich (mind. 6 Zeichen)
+        <p *ngIf="f.password.touched && f.password.invalid" class="text-red-600 text-sm mt-1">
+          Passwort ist erforderlich (mind. 6 Zeichen).
         </p>
       </div>
 
-      <!-- Backend-Fehler -->
+      <!-- Fehlermeldung vom Backend -->
       <div *ngIf="error" class="text-red-600 text-sm">
         {{ error }}
       </div>
@@ -65,10 +59,7 @@
 
     <p class="mt-4 text-center text-sm">
       Noch kein Konto?
-      <a
-        routerLink="/sign-up"
-        class="font-medium text-indigo-600 hover:text-indigo-500"
-      >
+      <a routerLink="/sign-up" class="font-medium text-indigo-600 hover:text-indigo-500">
         Registrieren
       </a>
     </p>

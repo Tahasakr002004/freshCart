@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap, of, catchError, map } from 'rxjs';
 
 export interface UserInfo {
-  id: string | number;
+  id?: string | number;
   firstName: string;
   lastName: string;
   email: string;
@@ -22,20 +22,24 @@ export interface LoginDto {
   password: string;
 }
 
+/**
+ * Backend liefert bei /user/verify:
+ * { user: { id, firstName, lastName, email } }
+ */
 export interface VerifyResponse {
   user: UserInfo;
 }
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Backend im Docker: localhost:5050
+  // Wichtig: dein Backend läuft über Docker auf Port 5050
   private readonly baseUrl = 'http://localhost:5050/user';
 
   readonly token = signal<string | null>(this.getStoredToken());
   readonly currentUser = signal<UserInfo | null>(null);
 
   constructor(private http: HttpClient) {
-    // Beim App-Start: wenn Token existiert, User-Daten nachladen
+    // Beim App-Start: wenn Token existiert, User vom Backend nachladen
     if (this.token()) {
       this.verify().subscribe();
     }
@@ -58,7 +62,8 @@ export class AuthService {
   }
 
   /**
-   * /user/verify – aktualisiert currentUser, loggt aber NICHT automatisch aus.
+   * Ruft /user/verify auf, aktualisiert currentUser
+   * und gibt User oder null zurück.
    */
   verify(): Observable<UserInfo | null> {
     const t = this.token();
@@ -68,21 +73,23 @@ export class AuthService {
 
     return this.http.get<VerifyResponse>(`${this.baseUrl}/verify`).pipe(
       tap((res) => {
+        // Backend: { user: {...} }
         this.currentUser.set(res.user);
       }),
       map((res) => res.user),
       catchError((err) => {
         console.error('[AuthService] verify error:', err);
-        // Kein auto-logout
+        // Sicherheitshalber bei kaputtem Token ausloggen
+        this.logout();
         return of(null);
       })
     );
   }
 
   /**
-   * Helper für Guards/Komponenten:
-   * - Wenn currentUser schon da -> direkt zurück
-   * - sonst verify()
+   * Helper für Guards:
+   * - wenn currentUser schon gesetzt -> direkt zurück
+   * - sonst verify() ausführen
    */
   ensureUserLoaded(): Observable<UserInfo | null> {
     const user = this.currentUser();

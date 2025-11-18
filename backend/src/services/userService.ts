@@ -23,7 +23,7 @@ export const register = async ({ firstName, lastName, email, password }: Registe
   // Gibt es den User schon?
   const existing = await userModel.findOne({ email });
   if (existing) {
-    return { data: "user is already existed", statusCode: 401 };
+    return { data: "user is already existed", statusCode: 409 };
   }
 
   // Passwort hashen

@@ -10,16 +10,17 @@ import { AuthService } from '../services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './sign-up.html',
+  styleUrls: ['./sign-up.css'],
 })
 export class SignUp {
-  private readonly fb = inject(FormBuilder);
-  private readonly auth = inject(AuthService);
-  private readonly router = inject(Router);
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
   submitting = false;
-  error: string | null = null;
+  error = '';
 
-  readonly form = this.fb.group({
+  form = this.fb.group({
     firstName: ['', [Validators.required, Validators.minLength(2)]],
     lastName: ['', [Validators.required, Validators.minLength(2)]],
     email: ['', [Validators.required, Validators.email]],
@@ -37,20 +38,31 @@ export class SignUp {
     }
 
     this.submitting = true;
-    this.error = null;
+    this.error = '';
 
-    this.auth.register(this.form.getRawValue() as any).subscribe({
+    const dto = {
+      firstName: this.form.value.firstName ?? '',
+      lastName: this.form.value.lastName ?? '',
+      email: this.form.value.email ?? '',
+      password: this.form.value.password ?? '',
+    };
+
+    console.log('[SignUp] submit() called', dto);
+
+    this.auth.register(dto).subscribe({
       next: () => {
         this.submitting = false;
-        // Nach erfolgreicher Registrierung -> Login-Seite
-        this.router.navigateByUrl('/sign-in');
+        // Nach Registrierung zum Login
+        this.router.navigate(['/sign-in']);
       },
       error: (err) => {
+        console.error('[SignUp] register error:', err);
         this.submitting = false;
-        this.error =
-          typeof err?.error === 'string' && err.error
-            ? err.error
-            : 'Registrierung fehlgeschlagen';
+        if (err.status === 409) {
+          this.error = 'Ein Benutzer mit dieser E-Mail existiert bereits.';
+        } else {
+          this.error = 'Registrierung fehlgeschlagen. Bitte später erneut versuchen.';
+        }
       },
     });
   }
