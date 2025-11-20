@@ -2,7 +2,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../models/product.model';
-import { ProductService } from '../services/product';
+import { ProductService } from '../services/product.service';
 import { ProductCard } from '../product-card/product-card';
 
 @Component({

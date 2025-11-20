@@ -11,13 +11,12 @@
         <div class="w-full">
           <div class="aspect-square w-full overflow-hidden rounded-md bg-gray-200">
             <img
-              [src]="p.imageUrl"
-              [alt]="p.name"
+              [src]="imageUrl"
+              [alt]="name"
               class="h-full w-full object-cover"
             />
           </div>
         </div>
-
         <!-- Product details -->
         <div>
           <h1 class="text-2xl font-bold tracking-tight text-gray-900">
@@ -29,7 +28,6 @@
               {{ p.stock > 0 ? (p.stock + ' in stock') : 'Out of stock' }}
             </p>
           </div>
-
           <!-- Quantity + Add to cart -->
           <div class="mt-6">
             <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>

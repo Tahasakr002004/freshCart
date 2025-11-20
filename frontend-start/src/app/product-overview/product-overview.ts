@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product.model';
-import { ProductService } from '../services/product';
+import { ProductService } from '../services/product.service';
 
 @Component({
   selector: 'app-product-overview',
@@ -15,7 +15,6 @@ export class ProductOverview implements OnInit {
   loading = signal(true);
   error = signal('');
 
-  // Accept optional product from parent and write to signal
   @Input('product') set productInput(value: Product | null | undefined) {
     if (value) {
       this.product.set(value);
@@ -24,12 +23,14 @@ export class ProductOverview implements OnInit {
     }
   }
 
-  constructor(private route: ActivatedRoute, private productService: ProductService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService
+  ) {}
 
   ngOnInit(): void {
-    // If product not provided via @Input, fetch it via route
     if (!this.product()) {
-      this.route.paramMap.subscribe(params => {
+      this.route.paramMap.subscribe((params) => {
         const id = params.get('id');
         if (!id) {
           this.error.set('Invalid product id');
@@ -46,11 +47,40 @@ export class ProductOverview implements OnInit {
             console.error('Failed to load product', err);
             this.error.set('Failed to load product');
             this.loading.set(false);
-          }
+          },
         });
       });
     } else {
       this.loading.set(false);
     }
+  }
+
+  // 🔽🔽🔽 ADD THESE SMALL GETTERS 🔽🔽🔽
+
+  get name(): string {
+    return this.product()?.name ?? '';
+  }
+
+  get imageUrl(): string {
+    const raw = this.product()?.imageUrl ?? '';
+
+    // If backend already sends a full URL, just use it
+    if (/^https?:\/\//.test(raw)) {
+      return raw;
+    }
+
+    // Case: '/images/apple_2.jpg'
+    if (raw.startsWith('/images/')) {
+      return `http://localhost:5050${raw}`;
+    }
+
+    // Case: '/public/freshcartImages/apple_2.jpg'
+    if (raw.startsWith('/public/freshcartImages/')) {
+      const fileName = raw.split('/').pop();
+      return `http://localhost:5050/images/${fileName}`;
+    }
+
+    // Fallback: if something else, try backend root
+    return raw ? `http://localhost:5050${raw}` : '';
   }
 }

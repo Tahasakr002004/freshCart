@@ -14,7 +14,7 @@ export const getAllProducts = async () => {
 export const seedInitialProducts = async () => {
   const initialProducts = [   
     {
-      name: "Orange",
+      name: "Apple",
       price: 10.99,
       imageUrl: "/public/freshcartImages/apple_2.jpg",
       stock: 100
@@ -22,55 +22,55 @@ export const seedInitialProducts = async () => {
     {
       name: "Kiwi",
       price: 9.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/kiwi_2.jpg",
       stock: 70
     },
     {
       name: "Banana",
       price: 12.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/banana_2.jpg",
       stock: 0
     },
     {
-      name: "Apple",
+      name: "Pineapple",
       price: 10.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/pineapple_2.jpg",
       stock: 100
     },
     {
       name: "Chocolate",
       price: 5.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/chocolate_2.jpg",
       stock: 200
     },
    {
-      name: "Orange",
+      name: "Milk",
       price: 10.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/milk_2.jpg",
       stock: 100
     },
     {
-      name: "Kiwi",
+      name: "Cheese",
       price: 9.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/cheese_2.jpg",
       stock: 70
     },
     {
-      name: "Banana",
+      name: "Yogurt",
       price: 12.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/yogurt_2.jpg",
       stock: 50
     },
     {
-      name: "Apple",
+      name: "Strawberry",
       price: 10.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/strawberry_2.jpg",
       stock: 100
     },
     {
-      name: "Chocolate",
+      name: "Cereal",
       price: 5.99,
-      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      imageUrl: "/public/freshcartImages/cereal_2.jpg",
       stock: 200
     },
   ];

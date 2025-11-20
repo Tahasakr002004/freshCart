@@ -27,7 +27,10 @@ app.use(cors({
 app.use(express.json());
 
 // Static Files 
-app.use('/images', express.static(path.join(__dirname, 'public/freshcartImages')));
+app.use(
+  '/images',
+  express.static(path.join(__dirname, '../public/freshcartImages'))
+);
 
 // Routen
 app.use('/admin', adminRouter);
