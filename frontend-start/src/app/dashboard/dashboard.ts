@@ -1,11 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { AuthService, UserInfo } from '../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './dashboard.html',
-  styleUrl: './dashboard.css'
+  styleUrls: ['./dashboard.css'],
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
+  user: UserInfo | null = null;
+  loading = true;
+
+  ngOnInit(): void {
+    // Beim Aufruf des Dashboards sicherstellen, dass der User geladen ist
+    this.auth.ensureUserLoaded().subscribe((user) => {
+      this.user = user;
+      this.loading = false;
+
+      // Falls kein User (z.B. abgelaufener Token) -> zurück zum Login
+      if (!user) {
+        this.router.navigate(['/sign-in']);
+      }
+    });
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/sign-in']);
+  }
 }

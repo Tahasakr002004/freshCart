@@ -14,16 +14,64 @@ export const getAllProducts = async () => {
 export const seedInitialProducts = async () => {
   const initialProducts = [   
     {
-      name: "Apple",
+      name: "Orange",
       price: 10.99,
-      imageUrl: "/freshcartImages/apple_2.jpg",
-      stock: 100,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 100
+    },
+    {
+      name: "Kiwi",
+      price: 9.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 70
     },
     {
       name: "Banana",
+      price: 12.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 0
+    },
+    {
+      name: "Apple",
       price: 10.99,
-      imageUrl: "/freshcartImages/banana_2.jpg",
-      stock: 100,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 100
+    },
+    {
+      name: "Chocolate",
+      price: 5.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 200
+    },
+   {
+      name: "Orange",
+      price: 10.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 100
+    },
+    {
+      name: "Kiwi",
+      price: 9.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 70
+    },
+    {
+      name: "Banana",
+      price: 12.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 50
+    },
+    {
+      name: "Apple",
+      price: 10.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 100
+    },
+    {
+      name: "Chocolate",
+      price: 5.99,
+      imageUrl: "/public/freshcartImages/apple_2.jpg",
+      stock: 200
     },
   ];
   try {   

@@ -1,68 +1,33 @@
-<!-- nav-bar.component.html -->
 <nav class="bg-gray-800 text-white shadow-md">
   <div class="max-w-7xl mx-auto px-6">
     <div class="flex h-16 items-center justify-between">
-
-      <!-- Left: Logo -->
+      <!-- Logo -->
       <div class="flex items-center space-x-2">
-        <img
-          src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-          alt="Logo"
-          class="h-8 w-auto"
-        />
         <span class="text-xl font-semibold">FreshCart</span>
       </div>
 
-      <!-- Center: Navigation Links -->
-      <div class="flex space-x-8">
-        <a href="#" class="hover:text-blue-400 font-medium">Home</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Shop</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Checkout</a>
-        <a href="#" class="hover:text-blue-400 font-medium">Cart</a>
-        <a href="#" class="hover:text-blue-400 font-medium">My Account</a>
-      </div>
+      <!-- Links -->
+      <div class="flex space-x-6 items-center">
+        <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
 
-      <!-- Right: Role Buttons -->
-      <div class="relative flex items-center space-x-3">
+        <!-- Wenn NICHT eingeloggt -->
+        <ng-container *ngIf="!isLoggedIn; else loggedIn">
+          <a routerLink="/sign-in" class="hover:text-gray-300">Sign In</a>
+          <a routerLink="/sign-up" class="hover:text-gray-300">Sign Up</a>
+        </ng-container>
 
-        <!-- Admin Dropdown -->
-        <div id="adminDropdown" class="relative" (click)="toggleAdminMenu()">
-         <button
-            class="flex items-center bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
+        <!-- Wenn eingeloggt -->
+        <ng-template #loggedIn>
+          <span class="text-sm text-gray-300" *ngIf="user">
+            {{ user.firstName }} {{ user.lastName }}
+          </span>
+          <button
+            (click)="logout()"
+            class="bg-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-600"
           >
-            Admin
-            <svg
-              class="w-4 h-4 ml-2 transition-transform"
-              [class.rotate-180]="showAdminMenu"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 9l-7 7-7-7" />
-            </svg>
+            Logout
           </button>
-
-          <!-- Dropdown Menu -->
-           @if(showAdminMenu){
-
-             <div
-             class="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded-md shadow-lg z-50"
-             >
-             <a href="#" class="block px-4 py-2 hover:bg-gray-100">Dashboard</a>
-             <a href="#" class="block px-4 py-2 text-red-600 hover:bg-gray-100">Logout</a>
-            </div>
-          }
-        </div>
-
-        <!-- User Button -->
-        <a
-          href="#"
-          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition"
-        >
-          User
-        </a>
+        </ng-template>
       </div>
     </div>
   </div>

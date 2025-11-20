@@ -1,0 +1,26 @@
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 pt-12 pb-16 sm:px-6 sm:pt-20 sm:pb-24 lg:max-w-7xl lg:px-8">
+    <h2 class="text-2xl font-bold tracking-tight text-gray-900">Our products</h2>
+
+    @if (loading()) {
+      <div class="mt-6 text-center text-gray-500">Loading products…</div>
+    }
+
+    @if (error()) {
+      <div class="mt-6 text-center text-red-600">{{ error() }}</div>
+    }
+
+    @if (!loading() && !error()) {
+      <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        @for (product of products(); track product._id) {
+          <app-product-card [product]="product"></app-product-card>
+        }
+      </div>
+    }
+
+    @if (!loading() && products().length === 0 && !error()) {
+      <div class="mt-6 text-center text-gray-500">No products found.</div>
+    }
+  </div>
+</div>
+

@@ -1,27 +1,30 @@
-import { Component, HostListener } from '@angular/core';
-
+// src/app/nav-bar/nav-bar.ts
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-nav-bar',
-  imports: [],
-  templateUrl: './nav-bar.html',
-  styleUrl: './nav-bar.css'
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  templateUrl: './nav-bar.html',   // <-- WICHTIG: nur noch nav-bar.html
 })
 export class NavBar {
-    showAdminMenu = false;
-    
-  
-  // method to open and close dropdown menu
-  toggleAdminMenu() {
-    this.showAdminMenu = !this.showAdminMenu;
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
+
+  get isLoggedIn(): boolean {
+    return !!this.auth.token();
+    // alternativ: return this.auth.isAuthenticated();
   }
-  
-  //this Decorator helps the Component to listen any events of DOM of page
-  @HostListener('document:click', ['$event'])
-  onClickOutside(event:Event) {
-    const target = event.target as HTMLElement;
-    if (!target.closest('#adminDropdown')) {
-      this.showAdminMenu = false;
-    }
+
+  get user() {
+    return this.auth.currentUser();
+  }
+
+  logout(): void {
+    this.auth.logout();
+    this.router.navigate(['/sign-in']);
   }
 }

@@ -1,0 +1,68 @@
+.dashboard-container {
+  min-height: calc(100vh - 64px); /* unterhalb der Navbar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  padding: 2rem 1rem;
+}
+
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1);
+  padding: 2rem 2.5rem;
+  max-width: 600px;
+  width: 100%;
+}
+
+.dashboard-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.dashboard-greeting {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard-email span {
+  font-family: monospace;
+}
+
+.dashboard-info {
+  font-size: 0.95rem;
+  color: #4b5563;
+}
+
+.dashboard-actions {
+  margin-top: 1.5rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.btn-primary {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: #4338ca;
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
