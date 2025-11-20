@@ -1,21 +1,21 @@
-version: "3.9"
+version: "4.1"
 
 services:
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile.dev   # for development (use Dockerfile.prod in production)
+      context: ./backend          # was "." when compose lived in backend
+      dockerfile: Dockerfile.dev
     container_name: freshcart-backend
     restart: unless-stopped
     ports:
       - "5050:5000"
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       - mongo
       - postgres
     volumes:
-      - .:/app
+      - ./backend:/app            # mount backend source into container
       - /app/node_modules
 
   mongo:
@@ -23,7 +23,7 @@ services:
     container_name: freshcart-mongo
     restart: unless-stopped
     ports:
-      - "27018:27017"  
+      - "27018:27017"
     volumes:
       - mongo_data:/data/db
 
@@ -39,6 +39,21 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  #frontend container for Angular app
+  frontend:
+    build:
+      context: ./frontend-start
+      dockerfile: Dockerfile.dev       # dev image (ng serve)
+    container_name: freshcart-frontend
+    restart: unless-stopped
+    ports:
+      - "4300:4300"                    # browser → http://localhost:4300
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend-start:/app          # live code updates
+      - /app/node_modules
 
 volumes:
   mongo_data:
