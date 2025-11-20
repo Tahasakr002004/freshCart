@@ -11,13 +11,14 @@ export const routes: Routes = [
   // Standard-Redirect: Root -> Shop
   { path: '', redirectTo: 'shop', pathMatch: 'full' },
 
-  // Auth-Seiten 
+  // Auth-Seiten
   { path: 'sign-in', component: SignIn },
   { path: 'sign-up', component: SignUp },
 
   // Geschützte Seiten
   { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
-  { path: 'shop', component: Shop, canActivate: [authGuard] },
+  // { path: 'shop', component: Shop, canActivate: [authGuard] },
+  { path: 'shop', component: Shop },
   { path: 'product/:id', component: ProductOverview, canActivate: [authGuard] },
 
   // Fallback
