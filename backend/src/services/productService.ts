@@ -18,7 +18,13 @@ export const seedInitialProducts = async () => {
       price: 10.99,
       imageUrl: "/freshcartImages/apple_2.jpg",
       stock: 100,
-    }
+    },
+    {
+      name: "Banana",
+      price: 10.99,
+      imageUrl: "/freshcartImages/banana_2.jpg",
+      stock: 100,
+    },
   ];
   try {   
     const existingProducts = await productModel.find();
@@ -33,10 +39,6 @@ export const seedInitialProducts = async () => {
     console.error("Error seeding initial products:", error);
   }
 };
-
-
-
-
 
 
 
