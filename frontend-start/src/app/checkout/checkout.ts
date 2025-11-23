@@ -3,6 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from '../services/order.service';
 import { CurrencyPipe } from '@angular/common';
 import { CartService } from '../services/cart.service';
+import { CartItem } from '../models/cart.model'; // added
 
 @Component({
   selector: 'app-checkout',
@@ -61,6 +62,20 @@ export class Checkout {
         this.resultMessage.set('Checkout failed.');
         this.submitting.set(false);
       }
+    });
+  }
+
+  // remove item from cart
+  deleteItem(productId: string) {
+    this.cartService.removeItem(productId).subscribe({
+      next: res => {
+        if (typeof res === 'string') {
+          console.warn('[RemoveItem]', res);
+        } else {
+          this.cartService.cart.set(res as any);
+        }
+      },
+      error: err => console.error('Remove from cart failed', err)
     });
   }
 }
