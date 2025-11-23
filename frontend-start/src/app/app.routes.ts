@@ -6,6 +6,7 @@ import { Dashboard } from './dashboard/dashboard';
 import { Shop } from './shop/shop';
 import { ProductOverview } from './product-overview/product-overview';
 import { authGuard } from './guards/auth.guard';
+import { Checkout } from './checkout/checkout';
 
 export const routes: Routes = [
   // Standard-Redirect: Root -> Shop
@@ -20,6 +21,7 @@ export const routes: Routes = [
   // { path: 'shop', component: Shop, canActivate: [authGuard] },
   { path: 'shop', component: Shop },
   { path: 'product/:id', component: ProductOverview, canActivate: [authGuard] },
+  { path: 'checkout', component: Checkout, canActivate: [authGuard] },
 
   // Fallback
   { path: '**', redirectTo: 'shop' },
