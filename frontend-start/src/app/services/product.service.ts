@@ -9,7 +9,7 @@ import { Product } from '../models/product.model';
 })
 export class ProductService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5050/product';
+  private apiUrl = '/product';
 
   constructor() {}
 
@@ -20,9 +20,9 @@ export class ProductService {
   }
 
   getProduct(id: string): Observable<Product> {
-  return this.http
-    .get<{ data: Product }>(`http://localhost:5050/product/${id}`)
-    .pipe(map((res) => res.data));
+    return this.http
+      .get<{ data: Product }>(`${this.apiUrl}/${id}`)
+      .pipe(map(res => res.data));
   }
 
 
