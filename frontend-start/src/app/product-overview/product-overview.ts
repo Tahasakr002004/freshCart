@@ -15,6 +15,7 @@ export class ProductOverview implements OnInit {
   product = signal<Product | null>(null);
   loading = signal(true);
   error = signal('');
+  addedMessage = signal(''); // added
 
   @Input('product') set productInput(value: Product | null | undefined) {
     if (value) {
@@ -94,11 +95,18 @@ export class ProductOverview implements OnInit {
       next: res => {
         if (typeof res === 'string') {
           console.warn('[AddToCart]', res);
+          this.addedMessage.set(res);
         } else {
           this.cart.cart.set(res as any);
+          this.addedMessage.set('Added to cart');
         }
+        setTimeout(() => this.addedMessage.set(''), 2000);
       },
-      error: err => console.error('Add to cart failed', err)
+      error: err => {
+        console.error('Add to cart failed', err);
+        this.addedMessage.set('Add failed');
+        setTimeout(() => this.addedMessage.set(''), 2500);
+      }
     });
   }
 }

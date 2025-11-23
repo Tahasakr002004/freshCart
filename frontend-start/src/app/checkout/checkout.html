@@ -10,7 +10,6 @@
           formControlName="address"
           class="w-full rounded border px-3 py-2"
           [class.border-red-500]="form.controls.address.invalid && form.controls.address.touched"
-          placeholder="123 Main St"
         />
         @if (form.controls.address.invalid && form.controls.address.touched) {
           <p class="text-xs text-red-600">
