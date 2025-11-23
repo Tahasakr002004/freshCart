@@ -2,6 +2,7 @@ import { Component, Input, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Product } from '../models/product.model';
 import { ProductService } from '../services/product.service';
+import { CartService } from '../services/cart.service';
 
 @Component({
   selector: 'app-product-overview',
@@ -25,7 +26,8 @@ export class ProductOverview implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private cart: CartService
   ) {}
 
   ngOnInit(): void {
@@ -82,5 +84,21 @@ export class ProductOverview implements OnInit {
 
     // Fallback: if something else, try backend root
     return raw ? `http://localhost:5050${raw}` : '';
+  }
+
+  addToCart(qtyInput: HTMLInputElement) {
+    const qty = Number(qtyInput.value) || 1;
+    const id = this.product()?._id;
+    if (!id) return;
+    this.cart.addItem(id, qty).subscribe({
+      next: res => {
+        if (typeof res === 'string') {
+          console.warn('[AddToCart]', res);
+        } else {
+          this.cart.cart.set(res as any);
+        }
+      },
+      error: err => console.error('Add to cart failed', err)
+    });
   }
 }
