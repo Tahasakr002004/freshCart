@@ -1,0 +1,112 @@
+import { Component, Input, OnInit, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Product } from '../models/product.model';
+import { ProductService } from '../services/product.service';
+import { CartService } from '../services/cart.service';
+
+@Component({
+  selector: 'app-product-overview',
+  imports: [],
+  templateUrl: './product-overview.html',
+  styleUrl: './product-overview.css'
+})
+export class ProductOverview implements OnInit {
+  // Signals
+  product = signal<Product | null>(null);
+  loading = signal(true);
+  error = signal('');
+  addedMessage = signal(''); // added
+
+  @Input('product') set productInput(value: Product | null | undefined) {
+    if (value) {
+      this.product.set(value);
+      this.error.set('');
+      this.loading.set(false);
+    }
+  }
+
+  constructor(
+    private route: ActivatedRoute,
+    private productService: ProductService,
+    private cart: CartService
+  ) {}
+
+  ngOnInit(): void {
+    if (!this.product()) {
+      this.route.paramMap.subscribe((params) => {
+        const id = params.get('id');
+        if (!id) {
+          this.error.set('Invalid product id');
+          this.loading.set(false);
+          return;
+        }
+        this.loading.set(true);
+        this.productService.getProduct(id).subscribe({
+          next: (p) => {
+            this.product.set(p);
+            this.loading.set(false);
+          },
+          error: (err) => {
+            console.error('Failed to load product', err);
+            this.error.set('Failed to load product');
+            this.loading.set(false);
+          },
+        });
+      });
+    } else {
+      this.loading.set(false);
+    }
+  }
+
+  // 🔽🔽🔽 ADD THESE SMALL GETTERS 🔽🔽🔽
+
+  get name(): string {
+    return this.product()?.name ?? '';
+  }
+
+  get imageUrl(): string {
+    const raw = this.product()?.imageUrl ?? '';
+
+    // If backend already sends a full URL, just use it
+    if (/^https?:\/\//.test(raw)) {
+      return raw;
+    }
+
+    // Case: '/images/apple_2.jpg'
+    if (raw.startsWith('/images/')) {
+      return `http://localhost:5050${raw}`;
+    }
+
+    // Case: '/public/freshcartImages/apple_2.jpg'
+    if (raw.startsWith('/public/freshcartImages/')) {
+      const fileName = raw.split('/').pop();
+      return `http://localhost:5050/images/${fileName}`;
+    }
+
+    // Fallback: if something else, try backend root
+    return raw ? `http://localhost:5050${raw}` : '';
+  }
+
+  addToCart(qtyInput: HTMLInputElement) {
+    const qty = Number(qtyInput.value) || 1;
+    const id = this.product()?._id;
+    if (!id) return;
+    this.cart.addItem(id, qty).subscribe({
+      next: res => {
+        if (typeof res === 'string') {
+          console.warn('[AddToCart]', res);
+          this.addedMessage.set(res);
+        } else {
+          this.cart.cart.set(res as any);
+          this.addedMessage.set('Added to cart');
+        }
+        setTimeout(() => this.addedMessage.set(''), 2000);
+      },
+      error: err => {
+        console.error('Add to cart failed', err);
+        this.addedMessage.set('Add failed');
+        setTimeout(() => this.addedMessage.set(''), 2500);
+      }
+    });
+  }
+}

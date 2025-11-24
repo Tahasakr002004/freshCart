@@ -1,0 +1,35 @@
+<nav class="bg-gray-800 text-white shadow-md">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex h-16 items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center space-x-2">
+        <span class="text-xl font-semibold">FreshCart</span>
+      </div>
+
+      <!-- Links -->
+      <div class="flex space-x-6 items-center">
+
+        <!-- Wenn NICHT eingeloggt -->
+        <ng-container *ngIf="!isLoggedIn; else loggedIn">
+          <a routerLink="/sign-in" class="hover:text-gray-300">Sign In</a>
+          <a routerLink="/sign-up" class="hover:text-gray-300">Sign Up</a>
+        </ng-container>
+
+        <!-- Wenn eingeloggt -->
+        <ng-template #loggedIn>
+          <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
+          <a routerLink="/checkout" class="hover:text-gray-300">Checkout</a>
+          <span class="text-sm text-gray-300" *ngIf="user">
+            {{ user.firstName }} {{ user.lastName }}
+          </span>
+          <button
+            (click)="logout()"
+            class="bg-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-600"
+          >
+            Logout
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</nav>

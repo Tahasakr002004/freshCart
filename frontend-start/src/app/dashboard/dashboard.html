@@ -1,0 +1,33 @@
+<div class="dashboard-container">
+  <div class="dashboard-card">
+    <h1 class="dashboard-title">Dashboard</h1>
+
+    <!-- Loading-Status -->
+    <div *ngIf="loading" class="dashboard-info">
+      <p>Lade Benutzerdaten ...</p>
+    </div>
+
+    <!-- User gefunden -->
+    <div *ngIf="!loading && user" class="dashboard-content">
+      <p class="dashboard-greeting">
+        Willkommen,
+        <strong>{{ user.firstName }} {{ user.lastName }}</strong>!
+      </p>
+
+      <p class="dashboard-email">
+        E-Mail: <span>{{ user.email }}</span>
+      </p>
+
+      <div class="dashboard-actions">
+        <button type="button" (click)="logout()" class="btn btn-primary">
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Kein User (Fallback, sollte durch Redirect kaum sichtbar sein) -->
+    <div *ngIf="!loading && !user" class="dashboard-info">
+      <p>Keine gültige Sitzung. Du wirst zum Login weitergeleitet ...</p>
+    </div>
+  </div>
+</div>

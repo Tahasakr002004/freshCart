@@ -1,0 +1,14 @@
+# frontend-start/Dockerfile.dev
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Angular dev server (your package.json uses port 4300)
+EXPOSE 4300
+
+CMD ["npm", "run", "start"]
