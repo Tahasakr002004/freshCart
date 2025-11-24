@@ -1,0 +1,72 @@
+<div class="max-w-7xl mx-auto py-10 md:grid md:grid-cols-2 md:gap-12">
+  <div class="max-w-xl">
+    <h2 class="text-2xl font-bold mb-6">Checkout</h2>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="mt-6 space-y-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Shipping Address</label>
+        <input
+          type="text"
+          formControlName="address"
+          class="w-full rounded border px-3 py-2"
+          [class.border-red-500]="form.controls.address.invalid && form.controls.address.touched"
+        />
+        @if (form.controls.address.invalid && form.controls.address.touched) {
+          <p class="text-xs text-red-600">
+            Address required (min 5 chars).
+          </p>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="rounded bg-indigo-600 px-4 py-2 text-white text-sm font-medium disabled:opacity-50"
+        [disabled]="!canCheckout()"
+      >
+        {{ submitting() ? 'Processing...' : 'Place Order' }}
+      </button>
+    </form>
+
+    @if (resultMessage()) {
+      <p class="mt-4 text-sm">{{ resultMessage() }}</p>
+    }
+  </div>
+
+  <!-- Cart Summary (Right Column) -->
+  <div class="mt-10 md:mt-0 bg-gray-50 rounded-lg p-6">
+    <h3 class="text-lg font-medium text-gray-900 mb-4">Cart summary</h3>
+    @if (cartItems().length) {
+      <ul class="divide-y divide-gray-200 text-sm mb-4">
+        @for (item of cartItems(); track item.product) {
+          <li class="py-2 flex justify-between">
+            <div class="mr-4">
+              <div class="font-medium text-gray-900">{{ item.product }}</div>
+              <div class="text-gray-500">Qty: {{ item.quantity }}</div>
+              <button
+                type="button"
+                class="mt-1 text-xs text-red-600 hover:underline"
+                (click)="deleteItem(item.product)"
+              >Remove</button>
+            </div>
+            <div class="text-right">
+              <div class="text-gray-700">
+                {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
+              </div>
+              <div class="text-gray-900 font-semibold">
+                {{ (item.unitPrice * item.quantity) | currency:'USD':'symbol':'1.2-2' }}
+              </div>
+            </div>
+          </li>
+        }
+      </ul>
+      <div class="flex justify-between pt-2 border-t border-gray-300 text-sm">
+        <span class="font-medium text-gray-700">Total</span>
+        <span class="text-gray-900 font-semibold">
+          {{ cartTotal() | currency:'USD':'symbol':'1.2-2' }}
+        </span>
+      </div>
+    } @else {
+      <div class="text-sm text-gray-500">No items found.</div>
+    }
+  </div>
+</div>

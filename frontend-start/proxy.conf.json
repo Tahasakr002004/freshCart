@@ -1,0 +1,37 @@
+{
+  "/cart": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/product": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/order": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/images": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/user": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  },
+  "/admin": {
+    "target": "http://backend:5000",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "warn"
+  }
+}
