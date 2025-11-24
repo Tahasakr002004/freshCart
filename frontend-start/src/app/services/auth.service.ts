@@ -32,8 +32,7 @@ export interface VerifyResponse {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  // Wichtig: dein Backend läuft über Docker auf Port 5050
-  private readonly baseUrl = 'http://localhost:5050/user';
+  private readonly baseUrl = '/user';
 
   readonly token = signal<string | null>(this.getStoredToken());
   readonly currentUser = signal<UserInfo | null>(null);

@@ -8,7 +8,6 @@
 
       <!-- Links -->
       <div class="flex space-x-6 items-center">
-        <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
 
         <!-- Wenn NICHT eingeloggt -->
         <ng-container *ngIf="!isLoggedIn; else loggedIn">
@@ -18,6 +17,8 @@
 
         <!-- Wenn eingeloggt -->
         <ng-template #loggedIn>
+          <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
+          <a routerLink="/checkout" class="hover:text-gray-300">Checkout</a>
           <span class="text-sm text-gray-300" *ngIf="user">
             {{ user.firstName }} {{ user.lastName }}
           </span>
