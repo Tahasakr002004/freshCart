@@ -3,14 +3,24 @@ node_modules/
 
 # Build output
 dist/
-
+build/
 
 # Logs
 *.log
 npm-debug.log*
 
 # Environment variables
-*.env
+.env
+.env.*
+*/.env
+
 
 # Editor folders
 .vscode/
+.idea/
+
+# Python, if you use venv
+venv/
+
+# Docker local overrides (optional)
+docker-compose.override.yml
