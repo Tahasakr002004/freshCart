@@ -10,7 +10,7 @@ services:
     ports:
       - "5050:5000"
     env_file:
-      - ./backend/.env
+      - ./.env
     depends_on:
       - mongo
       - postgres
