@@ -1,5 +1,6 @@
 # Node modules
 node_modules/
+pakage-lock.json
 
 # Build output
 dist/
@@ -8,6 +9,7 @@ build/
 # Logs
 *.log
 npm-debug.log*
+package-lock.json
 
 # Environment variables
 .env
@@ -16,6 +18,7 @@ npm-debug.log*
 # Editor folders
 .vscode/
 .idea/
+.hintrc
 
 # Python, if you use venv
 venv/

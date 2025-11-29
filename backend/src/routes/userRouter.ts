@@ -33,14 +33,7 @@ userRouter.post('/register', async (req: Request, res: Response): Promise<void> 
       password,
     });
 
-    // Falls register() einen Fehlerstatus zurückgibt → 1:1 durchreichen
-    if (statusCode !== 200) {
-      res.status(statusCode).send(data);
-      return;
-    }
-
-    // Für das Frontend: 201 + reine Text-Nachricht
-    res.status(201).send('Benutzer erfolgreich registriert');
+    res.status(statusCode).send(data);
   } catch (error) {
     console.error('Error in /user/register:', error);
     res.status(500).send('Error registering user');
@@ -61,6 +54,7 @@ userRouter.post('/login', async (req: Request, res: Response): Promise<void> => 
     res.status(500).send('Error logging in user');
   }
 });
+
 
 // Token prüfen: existiert der User zu diesem Token noch?
 userRouter.get('/verify', async (req: Request, res: Response): Promise<void> => {

@@ -1,5 +1,3 @@
-// Admin-side product CRUD
-// ===============================================
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
@@ -21,21 +19,21 @@ interface ProductsResponse {
 @Injectable({ providedIn: 'root' })
 export class AdminProductService {
   private readonly productBaseUrl = `${environment.apiBaseUrl}/product`;
-  private readonly adminProductBaseUrl = `${environment.apiBaseUrl}/admin`; // assuming /admin/products routes
+  private readonly adminProductBaseUrl = `${environment.apiBaseUrl}/admin`;
 
   constructor(private http: HttpClient) {}
 
+  // Shop products (public)
   getAll(): Observable<Product[]> {
-    return this.http
-      .get<ProductsResponse>(this.productBaseUrl)
-      .pipe(map(res => res.data));
+    return this.http.get<ProductsResponse>(this.productBaseUrl).pipe(map((res) => res.data));
   }
 
+  // Admin: CREATE product => POST /admin/products/item
   create(product: Product): Observable<Product> {
-    // Adapt to your real admin product route, e.g. /admin/products
-    return this.http.post<Product>(`${this.adminProductBaseUrl}/products`, product);
+    return this.http.post<Product>(`${this.adminProductBaseUrl}/products/item`, product);
   }
 
+  // Admin: DELETE product => DELETE /admin/products/:id
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.adminProductBaseUrl}/products/${id}`);
   }

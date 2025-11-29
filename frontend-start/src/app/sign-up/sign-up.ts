@@ -1,4 +1,4 @@
-// src/app/sign-up/sign-up.ts
+
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
