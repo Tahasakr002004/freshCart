@@ -1,0 +1,74 @@
+<div>
+    <h2>Admin Dashboard</h2>
+
+    <div style="margin-bottom:1rem;">
+      <strong>Logged in as:</strong>
+      {{ adminName || 'Unknown admin' }}
+      <button (click)="logout()" style="margin-left:1rem;">Logout</button>
+    </div>
+
+    <section style="margin-bottom:2rem; border:1px solid #ddd; padding:1rem;">
+      <h3>Add Product</h3>
+      <form [formGroup]="productForm" (ngSubmit)="createProduct()">
+        <div>
+          <label>Name</label><br />
+          <input type="text" formControlName="name" />
+        </div>
+        <div>
+          <label>Price</label><br />
+          <input type="number" formControlName="price" step="0.01" />
+        </div>
+        <div>
+          <label>Image URL (e.g. /images/apple_2.jpg)</label><br />
+          <input type="text" formControlName="imageUrl" />
+        </div>
+        <div>
+          <label>Stock</label><br />
+          <input type="number" formControlName="stock" />
+        </div>
+        <button type="submit" [disabled]="productForm.invalid || creating">
+          {{ creating ? 'Creating...' : 'Create Product' }}
+        </button>
+      </form>
+      <div *ngIf="createError" style="color:red; margin-top:0.5rem;">
+        {{ createError }}
+      </div>
+    </section>
+
+    <section>
+      <h3>Products</h3>
+      <div *ngIf="loading">Loading products...</div>
+      <div *ngIf="loadError" style="color:red;">{{ loadError }}</div>
+
+      <table *ngIf="!loading && products.length > 0" border="1" cellpadding="4" cellspacing="0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Image URL</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of products">
+            <td>{{ p._id }}</td>
+            <td>{{ p.name }}</td>
+            <td>{{ p.price }}</td>
+            <td>{{ p.stock }}</td>
+            <td>{{ p.imageUrl }}</td>
+            <td>
+              <button (click)="deleteProduct(p)" [disabled]="deletingId === p._id">
+                {{ deletingId === p._id ? 'Deleting...' : 'Delete' }}
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!loading && products.length === 0">
+        No products found.
+      </div>
+    </section>
+</div>
