@@ -56,6 +56,7 @@ export class Checkout {
       next: order => {
         this.resultMessage.set('Checkout successful. Order ID: ' + (order._id || '(pending)'));
         this.submitting.set(false);
+        this.cartService.loadCart();
       },
       error: err => {
         console.error(err);
