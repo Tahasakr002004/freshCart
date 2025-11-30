@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from '../services/order.service';
 import { CurrencyPipe } from '@angular/common';
 import { CartService } from '../services/cart.service';
-import { CartItem } from '../models/cart.model'; // added
+import { CartItem } from '../models/cart.model';
 
 @Component({
   selector: 'app-checkout',

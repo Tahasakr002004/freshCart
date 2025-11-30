@@ -15,7 +15,7 @@ export class ProductOverview implements OnInit {
   product = signal<Product | null>(null);
   loading = signal(true);
   error = signal('');
-  addedMessage = signal(''); // added
+  addedMessage = signal('');
 
   @Input('product') set productInput(value: Product | null | undefined) {
     if (value) {
