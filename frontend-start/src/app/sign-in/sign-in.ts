@@ -1,4 +1,4 @@
-// src/app/sign-in/sign-in.ts
+
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -13,7 +13,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./sign-in.css'],
 })
 export class SignIn implements OnInit {
-  // 👉 Services per inject(), kein constructor nötig
+  //Services per inject(), kein constructor nötig
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
@@ -21,7 +21,7 @@ export class SignIn implements OnInit {
   submitting = false;
   error = '';
 
-  // 👉 jetzt ist fb DEFINITIV initialisiert, bevor form gebaut wird
+  //jetzt ist fb DEFINITIV initialisiert, bevor form gebaut wird
   form = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
@@ -57,7 +57,7 @@ export class SignIn implements OnInit {
     this.auth.login(dto).subscribe({
       next: () => {
         this.submitting = false;
-        // 👉 nach Login weiter zum Shop
+        //nach Login weiter zum Shop
         this.router.navigate(['/shop']);
       },
       error: (err) => {

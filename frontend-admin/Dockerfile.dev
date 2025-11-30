@@ -1,0 +1,20 @@
+# Development Dockerfile for frontend-admin (Angular)
+# ---------------------------------------------------
+FROM node:20-alpine
+
+# Create and set working directory
+WORKDIR /app
+
+# Install dependencies (using package.json & package-lock.json)
+COPY package*.json ./
+RUN npm install
+
+# Copy the rest of the source code (will be overridden by bind mount in compose)
+COPY . .
+
+# Angular dev server port for admin app
+EXPOSE 4200
+
+# Start Angular in dev mode, listening on all interfaces and port 4200
+# Assumes package.json has: "start": "ng serve"
+CMD ["npm", "run", "start", "--", "--host", "0.0.0.0", "--port", "4200"]

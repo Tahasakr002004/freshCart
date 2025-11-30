@@ -1,0 +1,96 @@
+<div
+  class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-md">
+    <div>
+      <h2 class="mt-2 text-center text-3xl font-extrabold text-gray-900">
+        Admin Sign Up
+      </h2>
+      <p class="mt-2 text-center text-sm text-gray-600">
+        Already have an admin account?
+        <a
+          routerLink="/admin-sign-in"
+          class="font-medium text-indigo-600 hover:text-indigo-500"
+        >
+          Sign in here
+        </a>
+      </p>
+    </div>
+
+    <form
+      [formGroup]="form"
+      (ngSubmit)="submit()"
+      class="space-y-6"
+    >
+      <!-- Admin Name -->
+      <div>
+        <label
+          for="adminName"
+          class="block text-sm font-medium text-gray-700"
+        >
+          Admin Name
+        </label>
+        <input
+          id="adminName"
+          type="text"
+          formControlName="adminName"
+          class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          placeholder="masterAdmin"
+        />
+        <p
+          *ngIf="form.get('adminName')?.touched && form.get('adminName')?.invalid"
+          class="text-red-600 text-sm mt-1"
+        >
+          Admin name is required.
+        </p>
+      </div>
+
+      <!-- Password -->
+      <div>
+        <label
+          for="adminPassword"
+          class="block text-sm font-medium text-gray-700"
+        >
+          Password
+        </label>
+        <input
+          id="adminPassword"
+          type="password"
+          formControlName="adminPassword"
+          class="appearance-none rounded-md w-full px-3 py-2 border border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          placeholder="••••••••"
+        />
+        <p
+          *ngIf="
+            form.get('adminPassword')?.touched &&
+            form.get('adminPassword')?.invalid
+          "
+          class="text-red-600 text-sm mt-1"
+        >
+          Password is required (min. 6 characters).
+        </p>
+      </div>
+
+      <!-- Success message -->
+      <div *ngIf="message" class="text-green-600 text-sm">
+        {{ message }}
+      </div>
+
+      <!-- Backend error -->
+      <div *ngIf="error" class="text-red-600 text-sm">
+        {{ error }}
+      </div>
+
+      <!-- Submit button -->
+      <div>
+        <button
+          type="submit"
+          [disabled]="form.invalid || submitting"
+          class="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60"
+        >
+          {{ submitting ? 'Signing up...' : 'Sign Up' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

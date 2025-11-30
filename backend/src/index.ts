@@ -18,10 +18,14 @@ const app = express();
 const port = 5000;
 
 
-app.use(cors({
-  origin: ['http://localhost:4200', 'http://localhost:4300'],
-  credentials: true,
-}));
+// CORS setup: allow both frontends (shop + admin)
+app.use(
+  cors({
+    origin: ['http://localhost:4300', 'http://localhost:4200'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  })
+);
 
 // JSON-Body parsen
 app.use(express.json());
