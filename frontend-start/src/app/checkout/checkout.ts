@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { OrderService } from '../services/order.service';
 import { CurrencyPipe } from '@angular/common';
 import { CartService } from '../services/cart.service';
-import { CartItem } from '../models/cart.model'; // added
+import { CartItem } from '../models/cart.model';
 
 @Component({
   selector: 'app-checkout',
@@ -25,26 +25,13 @@ export class Checkout {
 
   constructor() {
     this.orderService.loadOrders();
-    this.cartService.loadCart(); // load cart contents
+    this.cartService.loadCart();
   }
 
-  // items from latest order
-  displayedItems = computed(() => {
-    const orders = this.orderService.orders();
-    if (!orders.length) return [];
-    return orders[orders.length - 1].items || [];
-  });
-
-  totalAmount = computed(() =>
-    this.displayedItems().reduce((sum, i) => sum + i.quantity * i.unitPrice, 0)
-  );
-
   cartItems = computed(() => this.cartService.cart()?.items ?? []);
-  cartTotal = computed(() =>
-    this.cartItems().reduce((sum, i) => sum + i.quantity * i.unitPrice, 0)
-  );
+  
+  cartTotal = computed(() => this.cartService.cart()?.totalAmount ?? 0);
 
-  // Disable checkout if cart empty
   canCheckout = computed(() => this.cartItems().length > 0 && !this.submitting());
 
   submit(): void {
@@ -56,6 +43,7 @@ export class Checkout {
       next: order => {
         this.resultMessage.set('Checkout successful. Order ID: ' + (order._id || '(pending)'));
         this.submitting.set(false);
+        this.cartService.loadCart();
       },
       error: err => {
         console.error(err);
@@ -65,7 +53,6 @@ export class Checkout {
     });
   }
 
-  // remove item from cart
   deleteItem(productId: string) {
     this.cartService.removeItem(productId).subscribe({
       next: res => {

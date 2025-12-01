@@ -20,7 +20,7 @@
 
       <button
         type="submit"
-        class="rounded bg-indigo-600 px-4 py-2 text-white text-sm font-medium disabled:opacity-50"
+        class="rounded bg-indigo-600 px-4 py-2 text-white text-sm font-medium disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
         [disabled]="!canCheckout()"
       >
         {{ submitting() ? 'Processing...' : 'Place Order' }}
@@ -40,11 +40,11 @@
         @for (item of cartItems(); track item.product) {
           <li class="py-2 flex justify-between">
             <div class="mr-4">
-              <div class="font-medium text-gray-900">{{ item.product }}</div>
+              <div class="font-medium text-gray-900">{{ item.productName }}</div>
               <div class="text-gray-500">Qty: {{ item.quantity }}</div>
               <button
                 type="button"
-                class="mt-1 text-xs text-red-600 hover:underline"
+                class="mt-1 text-xs text-red-600 hover:underline cursor-pointer"
                 (click)="deleteItem(item.product)"
               >Remove</button>
             </div>

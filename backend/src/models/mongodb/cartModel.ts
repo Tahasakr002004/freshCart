@@ -5,6 +5,7 @@ import { IProduct } from "./productModel";
 
 export interface ICartItem{
   product: IProduct ;
+  productName: string;
   unitPrice: number;
   quantity: number;
   
@@ -25,6 +26,7 @@ export interface ICart extends Document {
 const cartItemSchema: Schema = new Schema<ICartItem>({
 
   product: { type: Schema.Types.ObjectId, ref: "product", required: true },
+  productName: { type: String, required: true },
   quantity: { type: Number, required: true ,default: 1 },
   unitPrice: { type: Number, required: true },
 
