@@ -28,6 +28,7 @@ export class AdminProductService {
     return this.http.get<ProductsResponse>(this.productBaseUrl).pipe(map((res) => res.data));
   }
 
+  
   // Admin: CREATE product => POST /admin/products/item
   create(product: Product): Observable<Product> {
     return this.http.post<Product>(`${this.adminProductBaseUrl}/products/item`, product);

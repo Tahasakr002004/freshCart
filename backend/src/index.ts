@@ -11,6 +11,7 @@ import productRouter from "./routes/productRouter";
 import cartRouter from "./routes/cartRouter";
 import orderRouter from "./routes/orderRouter";
 import cors from 'cors';
+import { adminuserRouter } from './routes/adminuserRouter';
 
 dotenv.config();
 
@@ -43,6 +44,7 @@ app.use('/user', userRouter);
 app.use('/product', productRouter);
 app.use('/cart', cartRouter);
 app.use('/order', orderRouter);
+app.use('/admin', adminuserRouter);
 
 // DB-Verbindungen
 export const connectDatabases = async () => {
