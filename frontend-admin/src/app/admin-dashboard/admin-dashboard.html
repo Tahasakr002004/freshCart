@@ -160,4 +160,65 @@
   </div>
 </section>
 
+
+
+
+
+<section class="mt-6 bg-white border border-gray-200 rounded-lg shadow-sm p-4">
+  <div class="flex items-center justify-between mb-4">
+    <h3 class="text-lg font-semibold text-gray-800">Users</h3>
+    
+    <span *ngIf="!loadingUsers && Users.length" class="text-sm text-gray-500">
+      {{ Users.length }} Users
+    </span>
+  </div>
+
+  
+  <div *ngIf="loadingUsers" class="text-sm text-gray-500">Loading Users...</div>
+
+  
+  <div *ngIf="loadError" class="text-sm text-red-600 mb-3">{{ loadError }}</div>
+
+  
+  <div *ngIf="!loadingUsers && Users && Users.length > 0" class="overflow-x-auto">
+
+    <table class="min-w-full text-sm text-left border-collapse">
+      <thead>
+        <tr class="bg-gray-50">
+          <th class="px-3 py-2 font-medium text-gray-600 border-b">ID</th>
+          <th class="px-3 py-2 font-medium text-gray-600 border-b">First Name</th>
+          <th class="px-3 py-2 font-medium text-gray-600 border-b">Last Name</th>
+          <th class="px-3 py-2 font-medium text-gray-600 border-b">Email</th>
+          <!-- <th class="px-3 py-2 font-medium text-gray-600 border-b">Password</th> -->
+          <th class="px-3 py-2 font-medium text-gray-600 border-b">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let U of Users" class="border-b last:border-b-0 hover:bg-gray-50">
+          <td class="px-3 py-2 text-gray-700 break-all">{{ U._id }}</td>
+          <td class="px-3 py-2 text-gray-800">{{ U.firstName }}</td>
+          <td class="px-3 py-2 text-gray-700">{{ U.lastName }}</td>
+          <td class="px-3 py-2 text-gray-700">{{ U.email }}</td>
+          <!-- <td class="px-3 py-2 text-gray-700 break-all">{{ U.password }}</td> -->
+          <td class="px-3 py-2">
+            <button
+              (click)="deleteUser(U)"
+              [disabled]="deletingId === U._id"
+              class="inline-flex items-center px-3 py-1 rounded-md border border-red-500 text-red-600 text-xs font-medium hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {{ deletingId === U._id ? 'Deleting...' : 'Delete' }}
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+  
+
+</section>
+
+
+
 </div>

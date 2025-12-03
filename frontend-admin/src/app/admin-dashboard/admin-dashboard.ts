@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AdminProductService, Product } from '../services/admin-product.service';
 import { AdminAuthService } from '../services/admin-auth.service';
+import { AdminUserService, User } from '../services/admin-user.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -13,12 +14,19 @@ import { AdminAuthService } from '../services/admin-auth.service';
 })
 export class AdminDashboard implements OnInit {
   private productService = inject(AdminProductService);
+  private userService = inject(AdminUserService);
   private auth = inject(AdminAuthService);
   private fb = inject(FormBuilder);
 
   products: Product[] = [];
+
+  Users: User[] = [];
+
+
   loading = false;
   loadError = '';
+
+  loadingUsers = false;
 
   creating = false;
   createError = '';
@@ -36,10 +44,13 @@ export class AdminDashboard implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadUsers();
     this.auth.loadAdminInfo().subscribe((info) => {
       this.adminName = info?.adminName ?? null;
     });
+
   }
+
 
   loadProducts(): void {
     this.loading = true;
@@ -126,4 +137,55 @@ export class AdminDashboard implements OnInit {
     this.auth.logout();
     window.location.href = '/admin-sign-in';
   }
+
+
+
+
+  
+
+//User del and get all Users  
+
+deleteUser(u: User): void {
+  if (!u._id) return;
+
+  this.deletingId = u._id;
+
+  this.userService.delete(u._id).subscribe({
+    next: () => {
+      this.deletingId = null;
+      this.Users = this.Users.filter(x => x._id !== u._id);
+    },
+    error: (err) => {
+      console.error('[AdminDashboard] deleteUser error:', err);
+      this.deletingId = null;
+    }
+  });
+}
+
+
+
+  loadUsers(): void {
+    this.loadingUsers = true;
+    this.loadError = '';
+
+    this.userService.getAll().subscribe({
+      next: (users) => {
+        console.log('Users from backend:', users);
+        this.Users = users;
+        this.loadingUsers = false;
+      },
+      error: (err) => {
+        console.error('[AdminDashboard] loadUsers error:', err);
+        this.loadError = 'Failed to load users.';
+        this.loadingUsers = false;
+      },
+
+
+      
+    });
+  }
+
+  
+
+
 }
