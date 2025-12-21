@@ -59,7 +59,8 @@ export class AuthService {
     return this.http
       .post(`${this.baseUrl}/login`, dto, { responseType: 'text' })
       .pipe(
-        tap((token) => this.setToken(token))
+        tap((token) => this.setToken(token)),
+        tap(() => this.verify().subscribe())
       ) as Observable<string>;
   }
 
