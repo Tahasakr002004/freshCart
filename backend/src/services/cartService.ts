@@ -52,15 +52,29 @@ interface AddItemToCartRequest {
 export const addItemToCart = async ({ userId, productId, quantity }: AddItemToCartRequest) => {
   const cart =  await getActiveCartForUser({ userId });
 
-  const existsInCart = cart.items.find((item) => item.product.toString() === productId);
-
-  if(existsInCart){
-    return { data: "Item already exists in the Cart",statusCode:400 }
-  }
-
   const product = await productModel.findById(productId);
   if(!product) {
     return { data: "Product not found",statusCode:400 }
+  }
+
+  const existsInCart = cart.items.find((item) => item.product.toString() === productId);
+
+  // If already in cart, just bump quantity instead of failing
+  if (existsInCart) {
+    const newQuantity = existsInCart.quantity + quantity;
+
+    if (product.stock < newQuantity) {
+      return { data: "Not enough stock available", statusCode: 400 };
+    }
+
+    existsInCart.quantity = newQuantity;
+    existsInCart.unitPrice = product.price;
+
+    const total = calculateTotalAmount({ cart, productId });
+    cart.totalAmount = total + product.price * newQuantity;
+
+    const updatedCart = await cart.save();
+    return { data: updatedCart, statusCode: 200 };
   }
 
   if (product.stock < quantity) {
