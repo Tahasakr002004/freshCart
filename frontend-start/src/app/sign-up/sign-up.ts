@@ -1,4 +1,3 @@
-
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -52,8 +51,8 @@ export class SignUp {
     this.auth.register(dto).subscribe({
       next: () => {
         this.submitting = false;
-        // Nach Registrierung zum Login
-        this.router.navigate(['/sign-in']);
+        // Nach Registrierung direkt zum Shop (bereits eingeloggt)
+        this.router.navigate(['/shop']);
       },
       error: (err) => {
         console.error('[SignUp] register error:', err);

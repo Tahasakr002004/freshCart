@@ -49,14 +49,18 @@ export class AuthService {
   register(dto: RegisterDto): Observable<string> {
     return this.http.post(`${this.baseUrl}/register`, dto, {
       responseType: 'text',
-    }) as Observable<string>;
+    }).pipe(
+      tap((token) => this.setToken(token)),
+      tap(() => this.verify().subscribe())
+    ) as Observable<string>;
   }
 
   login(dto: LoginDto): Observable<string> {
     return this.http
       .post(`${this.baseUrl}/login`, dto, { responseType: 'text' })
       .pipe(
-        tap((token) => this.setToken(token))
+        tap((token) => this.setToken(token)),
+        tap(() => this.verify().subscribe())
       ) as Observable<string>;
   }
 
