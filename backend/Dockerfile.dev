@@ -10,6 +10,7 @@ RUN npm install
 
 # Copy rest of the source code
 COPY . .
+COPY public ./public
 
 # Install dev dependencies like nodemon globally
 RUN npm install -g ts-node nodemon typescript

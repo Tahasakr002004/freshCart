@@ -47,14 +47,24 @@
 
     <div>
       <label class="block text-sm font-medium text-gray-700">
-        Image file name (e.g. apple_2.jpg)
+        Image (from backend/public/freshcartImages)
       </label>
-      <input
-        type="text"
+
+      <select
         formControlName="imageFileName"
         class="mt-1 block w-full border border-gray-300 rounded-md px-3 py-2 text-sm
-               focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-      />
+              bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      >
+        <option value="" disabled>Select an image</option>
+        <option *ngFor="let file of availableImages" [value]="file">
+          {{ file }}
+        </option>
+      </select>
+
+      <p *ngIf="productForm.value.imageFileName" class="mt-1 text-xs text-gray-500">
+        Will be served as:
+        <code>/images/{{ productForm.value.imageFileName }}</code>
+      </p>
     </div>
 
     <div>
@@ -76,6 +86,7 @@
     >
       {{ creating ? 'Creating...' : 'Create Product' }}
     </button>
+
   </form>
 
   <div
@@ -167,19 +178,19 @@
 <section class="mt-6 bg-white border border-gray-200 rounded-lg shadow-sm p-4">
   <div class="flex items-center justify-between mb-4">
     <h3 class="text-lg font-semibold text-gray-800">Users</h3>
-    
+
     <span *ngIf="!loadingUsers && Users.length" class="text-sm text-gray-500">
       {{ Users.length }} Users
     </span>
   </div>
 
-  
+
   <div *ngIf="loadingUsers" class="text-sm text-gray-500">Loading Users...</div>
 
-  
+
   <div *ngIf="loadError" class="text-sm text-red-600 mb-3">{{ loadError }}</div>
 
-  
+
   <div *ngIf="!loadingUsers && Users && Users.length > 0" class="overflow-x-auto">
 
     <table class="min-w-full text-sm text-left border-collapse">
@@ -214,8 +225,8 @@
     </table>
   </div>
 
-  
-  
+
+
 
 </section>
 

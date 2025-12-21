@@ -11,6 +11,7 @@ RUN npm install --only=production
 # Copy the source code
 COPY . .
 
+COPY public ./public
 # Build TypeScript into dist folder
 RUN npm install typescript && npx tsc
 

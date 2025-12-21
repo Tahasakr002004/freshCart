@@ -23,19 +23,22 @@ export class AdminProductService {
 
   constructor(private http: HttpClient) {}
 
-  // Shop products (public)
   getAll(): Observable<Product[]> {
     return this.http.get<ProductsResponse>(this.productBaseUrl).pipe(map((res) => res.data));
   }
 
-  
-  // Admin: CREATE product => POST /admin/products/item
   create(product: Product): Observable<Product> {
     return this.http.post<Product>(`${this.adminProductBaseUrl}/products/item`, product);
   }
 
-  // Admin: DELETE product => DELETE /admin/products/:id
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.adminProductBaseUrl}/products/${id}`);
+  }
+
+  //NEW: list available images from backend
+  getAvailableImages(): Observable<string[]> {
+    return this.http
+      .get<{ files: string[] }>(`${this.adminProductBaseUrl}/product-images`)
+      .pipe(map((res) => res.files));
   }
 }

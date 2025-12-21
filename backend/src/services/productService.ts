@@ -1,4 +1,5 @@
 import productModel from "../models/mongodb/productModel";
+import { Request, Response } from "express";
 
 
 export const getAllProducts = async () => {
@@ -104,12 +105,40 @@ export const getProductById = async (id: string) => {
   }
 };
 
-export const createProduct = async (productData: any) => {
+// export const createProduct = async (productData: any) => {
+//   try {
+//     const newProduct = new productModel(productData);
+//     await newProduct.save();
+//     return newProduct;
+//   } catch (error) {
+//     throw new Error("Error creating product");
+//   }
+// };
+export const createProduct = async (req: Request<any, any, { name: string; price: string | number; stock: string | number }>, res: Response) => {
+  
   try {
-    const newProduct = new productModel(productData);
-    await newProduct.save();
-    return newProduct;
-  } catch (error) {
-    throw new Error("Error creating product");
+    const { name, price, stock } = req.body;
+
+    // multer puts the file info in req.file
+    const file = (req as any).file as Express.Multer.File | undefined;
+
+    let imageUrl: string | undefined;
+
+    if (file) {
+      // index.ts serves: app.use('/images', express.static(...freshcartImages))
+      imageUrl = `/images/${file.filename}`;
+    }
+
+    const newProduct = await productModel.create({
+      name,
+      price: Number(price),
+      stock: Number(stock),
+      imageUrl,
+    });
+
+    res.status(201).json(newProduct);
+  } catch (err) {
+    console.error("Failed to create product:", err);
+    res.status(500).json({ error: "Failed to create product" });
   }
 };
