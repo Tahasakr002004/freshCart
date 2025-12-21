@@ -1,4 +1,3 @@
-
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -41,14 +40,30 @@ export class AdminSignUp {
       adminPassword: this.form.value.adminPassword ?? '',
     };
 
+    // 1) Register admin
     this.auth.register(dto).subscribe({
-      next: (resText) => {
-        this.submitting = false;
-        this.message =  'Admin registered successfully.';
-       // Optionally auto-redirect:
-        this.router.navigate(['/admin-sign-in']);
+      next: () => {
+        // Optional local message
+        this.message = 'Admin registered successfully. Logging you in...';
+
+        // 2) Immediately log in with same credentials
+        this.auth.login(dto).subscribe({
+          next: () => {
+            // 3) Login successful (token stored in AdminAuthService)
+            this.submitting = false;
+            // Redirect directly to dashboard
+            this.router.navigate(['/dashboard']);
+          },
+          error: (loginErr) => {
+            console.error('[AdminSignUp] auto-login error:', loginErr);
+            this.submitting = false;
+            // Fall back: ask admin to log in manually
+            this.error = 'Registered, but automatic login failed. Please sign in.';
+            this.router.navigate(['/admin-sign-in']);
+          },
+        });
       },
-      error: err => {
+      error: (err) => {
         console.error('[AdminSignUp] register error:', err);
         this.submitting = false;
         this.error = 'Registration failed. Please try again later.';
