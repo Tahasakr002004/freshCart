@@ -1,9 +1,11 @@
-
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Observable, map } from 'rxjs';
+
+type LoginMode = 'user' | 'admin';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,7 +15,6 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./sign-in.css'],
 })
 export class SignIn implements OnInit {
-  //Services per inject(), kein constructor nötig
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
@@ -21,9 +22,9 @@ export class SignIn implements OnInit {
   submitting = false;
   error = '';
 
-  //jetzt ist fb DEFINITIV initialisiert, bevor form gebaut wird
   form = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    mode: ['user' as LoginMode, [Validators.required]],
+    identifier: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
@@ -31,10 +32,28 @@ export class SignIn implements OnInit {
     return this.form.controls;
   }
 
+  get mode(): LoginMode {
+    return (this.form.value.mode ?? 'user') as LoginMode;
+  }
+
   ngOnInit(): void {
-    // Wenn schon eingeloggt → direkt weiter
+    this.form.controls.mode.valueChanges.subscribe((m) => {
+      const mode = (m ?? 'user') as LoginMode;
+      const identifier = this.form.controls.identifier;
+
+      identifier.clearValidators();
+
+      if (mode === 'admin') {
+        identifier.setValidators([Validators.required]);
+      } else {
+        identifier.setValidators([Validators.required, Validators.email]);
+      }
+
+      identifier.updateValueAndValidity();
+    });
+
     if (this.auth.isAuthenticated()) {
-      this.auth.ensureUserLoaded().subscribe(() => {
+      this.auth.ensureIdentityLoaded().subscribe(() => {
         this.router.navigate(['/shop']);
       });
     }
@@ -49,22 +68,29 @@ export class SignIn implements OnInit {
     this.submitting = true;
     this.error = '';
 
-    const dto = {
-      email: this.form.value.email ?? '',
-      password: this.form.value.password ?? '',
-    };
+    const mode = this.mode;
+    const identifier = (this.form.value.identifier ?? '').trim();
+    const password = this.form.value.password ?? '';
 
-    this.auth.login(dto).subscribe({
+    const login$ : Observable<void> =
+      mode === 'admin'
+        ? this.auth.loginAdmin({ adminName: identifier, adminPassword: password }).pipe(map(() => void 0))
+        : this.auth.loginUser({ email: identifier, password }).pipe(map(() => void 0));
+
+    login$.subscribe({
       next: () => {
         this.submitting = false;
-        //nach Login weiter zum Shop
         this.router.navigate(['/shop']);
       },
       error: (err) => {
         console.error('[SignIn] login error:', err);
         this.submitting = false;
+
         if (err.status === 400 || err.status === 401) {
-          this.error = 'E-Mail oder Passwort ist falsch.';
+          this.error =
+            mode === 'admin'
+              ? 'Admin-Name oder Passwort ist falsch.'
+              : 'E-Mail oder Passwort ist falsch.';
         } else {
           this.error = 'Login fehlgeschlagen. Bitte später erneut versuchen.';
         }

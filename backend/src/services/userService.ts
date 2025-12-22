@@ -1,5 +1,4 @@
-// backend/services/userService.ts
-import userModel, { IUser } from "../models/mongodb/userModel";
+import userModel from "../models/mongodb/userModel";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
@@ -20,7 +19,6 @@ interface ServiceResult<T = any> {
   data: T;
 }
 
-// Helper to ensure JWT_SECRET is present
 const getJwtSecret = (): string => {
   const secret = process.env.JWT_SECRET;
   if (!secret || !secret.trim()) {
@@ -29,10 +27,16 @@ const getJwtSecret = (): string => {
   return secret;
 };
 
-// JWT mit minimalen User-Infos erzeugen
-const generateJWT = (payload: { firstName: string; lastName: string; email: string }): string => {
+// ✅ role + userId in token
+const generateJWT = (payload: {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: "user";
+}): string => {
   const secret = getJwtSecret();
-  return jwt.sign(payload, secret);
+  return jwt.sign(payload, secret, { expiresIn: "2h" });
 };
 
 export const register = async ({
@@ -45,10 +49,7 @@ export const register = async ({
     const existing = await userModel.findOne({ email });
 
     if (existing) {
-      return {
-        statusCode: 409,
-        data: "user is already existed",
-      };
+      return { statusCode: 409, data: "user is already existed" };
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -61,22 +62,17 @@ export const register = async ({
     });
 
     const token = generateJWT({
+      userId: (newUser._id as any).toString(),
       firstName: newUser.firstName,
       lastName: newUser.lastName,
       email: newUser.email,
+      role: "user",
     });
 
-    // Wichtig: 200, weil dein userRouter genau darauf prüft
-    return {
-      statusCode: 200,
-      data: token,
-    };
+    return { statusCode: 200, data: token };
   } catch (err) {
     console.error("[userService.register] error:", err);
-    return {
-      statusCode: 500,
-      data: "Internal server error",
-    };
+    return { statusCode: 500, data: "Internal server error" };
   }
 };
 
@@ -85,36 +81,26 @@ export const login = async ({ email, password }: LoginData): Promise<ServiceResu
     const findUser = await userModel.findOne({ email });
 
     if (!findUser) {
-      return {
-        statusCode: 401,
-        data: "user is not existed",
-      };
+      return { statusCode: 401, data: "user is not existed" };
     }
 
     const passwordMatch = await bcrypt.compare(password, findUser.password);
 
     if (!passwordMatch) {
-      return {
-        statusCode: 401,
-        data: "password is not correct",
-      };
+      return { statusCode: 401, data: "password is not correct" };
     }
 
     const token = generateJWT({
+      userId: (findUser._id as any).toString(),
       firstName: findUser.firstName,
       lastName: findUser.lastName,
       email: findUser.email,
+      role: "user",
     });
 
-    return {
-      statusCode: 200,
-      data: token,
-    };
+    return { statusCode: 200, data: token };
   } catch (err) {
     console.error("[userService.login] error:", err);
-    return {
-      statusCode: 500,
-      data: "Internal server error",
-    };
+    return { statusCode: 500, data: "Internal server error" };
   }
 };

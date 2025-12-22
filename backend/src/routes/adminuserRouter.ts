@@ -14,4 +14,4 @@ adminuserRouter.get("/users", validateAdminJWT, getAllUsers);
 
 adminuserRouter.delete("/users/:id", validateAdminJWT, deleteUserAccount);
 
-//export default adminuserRouter;
+export default adminuserRouter;

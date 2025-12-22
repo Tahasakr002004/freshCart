@@ -1,4 +1,3 @@
-
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
@@ -8,29 +7,46 @@
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
-      <!-- E-Mail -->
-      <div>
-        <label for="email" class="block text-sm font-medium text-gray-900">
-          E-Mail-Adresse
+
+      <!-- Login Mode Toggle -->
+      <div class="flex items-center gap-4">
+        <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+          <input type="radio" formControlName="mode" value="user" />
+          <span>User</span>
         </label>
+
+        <label class="inline-flex items-center gap-2 text-sm text-gray-700">
+          <input type="radio" formControlName="mode" value="admin" />
+          <span>Admin</span>
+        </label>
+      </div>
+
+      <!-- Identifier (Email OR AdminName) -->
+      <div>
+        <label class="block text-sm font-medium text-gray-900">
+          {{ mode === 'admin' ? 'Admin Name' : 'E-Mail-Adresse' }}
+        </label>
+
         <input
-          id="email"
-          type="email"
-          formControlName="email"
+          [type]="mode === 'admin' ? 'text' : 'email'"
+          formControlName="identifier"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
-        <p *ngIf="f.email.touched && f.email.invalid" class="text-red-600 text-sm mt-1">
-          Bitte gib eine gültige E-Mail-Adresse ein.
+
+        <!-- Identifier Error -->
+        <p *ngIf="f.identifier.touched && f.identifier.invalid" class="text-red-600 text-sm mt-1">
+          {{ mode === 'admin'
+            ? 'Bitte gib einen Admin-Namen ein.'
+            : 'Bitte gib eine gültige E-Mail-Adresse ein.' }}
         </p>
       </div>
 
       <!-- Passwort -->
       <div>
-        <label for="password" class="block text-sm font-medium text-gray-900">
+        <label class="block text-sm font-medium text-gray-900">
           Passwort
         </label>
         <input
-          id="password"
           type="password"
           formControlName="password"
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -63,8 +79,9 @@
         Registrieren
       </a>
     </p>
+
     <p class="mt-6 text-center text-sm text-gray-500">
-         Just want to browse?
+      Just want to browse?
     </p>
 
     <div class="mt-2">
@@ -75,7 +92,5 @@
         Continue as guest
       </a>
     </div>
-
-
   </div>
 </div>

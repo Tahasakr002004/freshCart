@@ -1,4 +1,3 @@
-// src/app/nav-bar/nav-bar.ts
 import { Component, computed, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -9,7 +8,7 @@ import { CartService } from '../services/cart.service';
   selector: 'app-nav-bar',
   standalone: true,
   imports: [CommonModule, RouterLink],
-  templateUrl: './nav-bar.html',   // <-- WICHTIG: nur noch nav-bar.html
+  templateUrl: './nav-bar.html',
 })
 export class NavBar {
   private readonly auth = inject(AuthService);
@@ -17,9 +16,12 @@ export class NavBar {
   private readonly cart = inject(CartService);
 
   constructor() {
+    // ✅ only load cart if logged in as USER (prevents 403 for admin)
     effect(() => {
       const token = this.auth.token();
-      if (token) {
+      const role = this.auth.role();
+
+      if (token && role === 'user') {
         this.cart.loadCart();
       } else {
         this.cart.cart.set(null);
@@ -33,7 +35,10 @@ export class NavBar {
 
   get isLoggedIn(): boolean {
     return !!this.auth.token();
-    // alternativ: return this.auth.isAuthenticated();
+  }
+
+  get isUser(): boolean {
+    return this.auth.role() === 'user';
   }
 
   get user() {

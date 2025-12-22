@@ -1,37 +1,31 @@
-// src/routes/orderRouter.ts
-import express, { Request, Response, NextFunction } from 'express';
-import validateJWT from '../middlewares/validateJWT';
-import { ExtendedRequest } from '../types/extendedRequest';
-import { checkout, showOrders } from '../services/orderService';
+import express, { Request, Response, NextFunction } from "express";
+import validateAuth from "../middlewares/validateAuth";
+import requireUser from "../middlewares/requireUser";
+import { ExtendedRequest } from "../types/extendedRequest";
+import { checkout, showOrders } from "../services/orderService";
 
 const orderRouter = express.Router();
 
-/**
- * GET /order/items
- * Alle Bestellungen des eingeloggten Users holen
- */
 orderRouter.get(
-  '/items',
-  validateJWT,
+  "/items",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
       const { data, statusCode } = await showOrders(user._id);
       res.status(statusCode).send(data);
     } catch (error) {
-      console.error('Error fetching orders:', error);
-      res.status(500).send({ message: 'Error fetching orders' });
+      console.error("Error fetching orders:", error);
+      res.status(500).send({ message: "Error fetching orders" });
     }
   }
 );
 
-/**
- * POST /order/checkout
- * Checkout-Prozess starten (Bestellung anlegen)
- */
 orderRouter.post(
-  '/checkout',
-  validateJWT,
+  "/checkout",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
@@ -44,8 +38,8 @@ orderRouter.post(
 
       res.status(statusCode).send(data);
     } catch (error) {
-      console.error('Checkout failed:', error);
-      res.status(500).send({ message: 'Checkout failed', error });
+      console.error("Checkout failed:", error);
+      res.status(500).send({ message: "Checkout failed", error });
     }
   }
 );

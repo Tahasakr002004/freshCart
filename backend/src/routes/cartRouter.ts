@@ -1,43 +1,37 @@
-// src/routes/cartRouter.ts
-import express, { Request, Response, NextFunction } from 'express';
-import validateJWT from '../middlewares/validateJWT';
-import { ExtendedRequest } from '../types/extendedRequest';
+import express, { Request, Response, NextFunction } from "express";
+import validateAuth from "../middlewares/validateAuth";
+import requireUser from "../middlewares/requireUser";
+import { ExtendedRequest } from "../types/extendedRequest";
 import {
   getActiveCartForUser,
   addItemToCart,
   updateItemInCart,
   deleteItemInCart,
   clearCart,
-} from '../services/cartService';
+} from "../services/cartService";
 
 const cartRouter = express.Router();
 
-/**
- * GET /cart
- * Aktiven Warenkorb des eingeloggten Users holen
- */
 cartRouter.get(
-  '/',
-  validateJWT,
+  "/",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
       const cart = await getActiveCartForUser({ userId: user._id });
       res.status(200).send(cart);
     } catch (error) {
-      console.error('Error fetching cart:', error);
-      res.status(500).send({ message: 'Error fetching cart' });
+      console.error("Error fetching cart:", error);
+      res.status(500).send({ message: "Error fetching cart" });
     }
   }
 );
 
-/**
- * POST /cart/items
- * Artikel in den Warenkorb legen
- */
 cartRouter.post(
-  '/items',
-  validateJWT,
+  "/items",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
@@ -51,19 +45,16 @@ cartRouter.post(
 
       res.status(response.statusCode).send(response.data);
     } catch (error) {
-      console.error('Error adding item to cart:', error);
-      res.status(500).send({ message: 'Error adding item to cart' });
+      console.error("Error adding item to cart:", error);
+      res.status(500).send({ message: "Error adding item to cart" });
     }
   }
 );
 
-/**
- * PUT /cart/items
- * Artikel im Warenkorb aktualisieren (z. B. Menge ändern)
- */
 cartRouter.put(
-  '/items',
-  validateJWT,
+  "/items",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
@@ -76,25 +67,22 @@ cartRouter.put(
       });
 
       if (!response) {
-        res.status(500).send({ error: 'Failed to update cart item.' });
+        res.status(500).send({ error: "Failed to update cart item." });
         return;
       }
 
       res.status(200).send(response.data);
     } catch (error) {
-      console.error('Error updating item in cart:', error);
-      res.status(500).send({ message: 'Error updating item in cart' });
+      console.error("Error updating item in cart:", error);
+      res.status(500).send({ message: "Error updating item in cart" });
     }
   }
 );
 
-/**
- * DELETE /cart/items/:productId
- * Einzelnen Artikel aus dem Warenkorb löschen
- */
 cartRouter.delete(
-  '/items/:productId',
-  validateJWT,
+  "/items/:productId",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
@@ -107,29 +95,24 @@ cartRouter.delete(
 
       res.status(response.statusCode).send(response.data);
     } catch (error) {
-      console.error('Error deleting item from cart:', error);
-      res.status(500).send({ message: 'Error deleting item from cart' });
+      console.error("Error deleting item from cart:", error);
+      res.status(500).send({ message: "Error deleting item from cart" });
     }
   }
 );
 
-/**
- * DELETE /cart
- * Gesamten Warenkorb leeren
- */
 cartRouter.delete(
-  '/',
-  validateJWT,
+  "/",
+  validateAuth,
+  requireUser,
   async (req: Request, res: Response, _next: NextFunction): Promise<void> => {
     try {
       const { user } = req as ExtendedRequest;
-
       const response = await clearCart({ userId: user._id });
-
       res.status(response.statusCode).send(response.data);
     } catch (error) {
-      console.error('Error clearing cart:', error);
-      res.status(500).send({ message: 'Error clearing cart' });
+      console.error("Error clearing cart:", error);
+      res.status(500).send({ message: "Error clearing cart" });
     }
   }
 );

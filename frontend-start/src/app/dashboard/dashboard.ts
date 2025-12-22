@@ -19,7 +19,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit(): void {
     // Beim Aufruf des Dashboards sicherstellen, dass der User geladen ist
-    this.auth.ensureUserLoaded().subscribe((user) => {
+  this.auth.ensureUserLoaded().subscribe((user: UserInfo | null) => {
       this.user = user;
       this.loading = false;
 

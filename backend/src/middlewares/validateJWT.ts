@@ -1,4 +1,4 @@
-// src/middlewares/validateJWT.ts
+
 import { RequestHandler, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import userModel from '../models/mongodb/userModel';

@@ -1,17 +1,18 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-
-const JWT_SECRETADMIN = process.env.JWT_SECRETADMIN || "F&PHB*Zn)CY&R:-qaH&g3KGOl!`i2f8!hGl/g?pwOFwYJ]'S41Nnmf>$.~^vDu9";
+const JWT_SECRETADMIN =
+  process.env.JWT_SECRETADMIN ||
+  "F&PHB*Zn)CY&R:-qaH&g3KGOl!`i2f8!hGl/g?pwOFwYJ]'S41Nnmf>$.~^vDu9";
 
 interface JwtPayload {
   id: number | string;
   adminName: string;
+  role?: "admin";
 }
 
-//// Extend Express's Request object
 export interface ExtendedRequestAdmin extends Request {
   admin?: JwtPayload;
 }
@@ -20,7 +21,7 @@ const validateAdminJWT = (req: ExtendedRequestAdmin, res: any, next: NextFunctio
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    return res.status(403).json({ message: "Authorization token missing or malformed." });
+     return res.status(403).json({ message: "Authorization token missing or malformed." });
   }
 
   const token = authHeader.split(" ")[1]?.trim();
@@ -30,7 +31,7 @@ const validateAdminJWT = (req: ExtendedRequestAdmin, res: any, next: NextFunctio
     req.admin = decoded;
     next();
   } catch (err) {
-    return res.status(401).json({ message: "Invalid token." });
+   return res.status(401).json({ message: "Invalid token." });
   }
 };
 
