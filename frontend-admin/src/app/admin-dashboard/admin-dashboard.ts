@@ -30,6 +30,11 @@ export class AdminDashboard implements OnInit {
   creating = false;
   createError = '';
   deletingId: string | null = null;
+  updating = false;
+  updateError = '';
+
+  editingProduct: Product | null = null;
+  editingImageFileName = '';
 
   adminName: string | null = null;
 
@@ -41,6 +46,14 @@ export class AdminDashboard implements OnInit {
     name: ['', Validators.required],
     price: [0, [Validators.required]],
     imageFileName: ['', Validators.required], // <- only file name, e.g. "apple_2.jpg"
+    stock: [0, [Validators.required]],
+  });
+
+  // Edit product form (image is optional; keep current if empty)
+  editForm = this.fb.group({
+    name: ['', Validators.required],
+    price: [0, [Validators.required]],
+    imageFileName: [''],
     stock: [0, [Validators.required]],
   });
 
@@ -146,6 +159,76 @@ export class AdminDashboard implements OnInit {
       error: (err) => {
         console.error('[AdminDashboard] deleteProduct error:', err);
         this.deletingId = null;
+      },
+    });
+  }
+
+  startEdit(p: Product): void {
+    if (!p._id) return;
+
+    this.editingProduct = p;
+    this.updateError = '';
+
+    const imageFileName = (p.imageUrl ?? '').split('/').pop() || '';
+    this.editingImageFileName = imageFileName;
+    if (imageFileName && !this.availableImages.includes(imageFileName)) {
+      this.availableImages = [imageFileName, ...this.availableImages];
+    }
+
+    this.editForm.setValue({
+      name: p.name ?? '',
+      price: Number(p.price ?? 0),
+      imageFileName,
+      stock: Number(p.stock ?? 0),
+    });
+  }
+
+  cancelEdit(): void {
+    this.editingProduct = null;
+    this.editingImageFileName = '';
+    this.editForm.reset({
+      name: '',
+      price: 0,
+      imageFileName: '',
+      stock: 0,
+    });
+  }
+
+  updateProduct(): void {
+    if (!this.editingProduct?._id) return;
+
+    if (this.editForm.invalid) {
+      this.editForm.markAllAsTouched();
+      return;
+    }
+
+    this.updating = true;
+    this.updateError = '';
+
+    const updates: Partial<Product> = {
+      name: this.editForm.value.name ?? '',
+      price: Number(this.editForm.value.price ?? 0),
+      stock: Number(this.editForm.value.stock ?? 0),
+    };
+
+    let imageFileName = this.editForm.value.imageFileName?.trim() || '';
+    if (imageFileName.includes('/')) {
+      imageFileName = imageFileName.split('/').pop() || imageFileName;
+    }
+    if (imageFileName && imageFileName !== this.editingImageFileName) {
+      updates.imageUrl = `/images/${imageFileName}`;
+    }
+
+    this.productService.update(this.editingProduct._id, updates).subscribe({
+      next: (updated) => {
+        this.updating = false;
+        this.products = this.products.map((x) => (x._id === updated._id ? updated : x));
+        this.cancelEdit();
+      },
+      error: (err) => {
+        console.error('[AdminDashboard] updateProduct error:', err);
+        this.updating = false;
+        this.updateError = 'Failed to update product.';
       },
     });
   }

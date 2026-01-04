@@ -31,6 +31,10 @@ export class AdminProductService {
     return this.http.post<Product>(`${this.adminProductBaseUrl}/products/item`, product);
   }
 
+  update(id: string, updates: Partial<Product>): Observable<Product> {
+    return this.http.put<Product>(`${this.adminProductBaseUrl}/products/${id}`, updates);
+  }
+
   delete(id: string): Observable<void> {
     return this.http.delete<void>(`${this.adminProductBaseUrl}/products/${id}`);
   }

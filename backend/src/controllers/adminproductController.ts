@@ -33,7 +33,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 // UPDATE
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const updated = await productModel.findByIdAndUpdate(req.params.id, req.body);
+    const updated = await productModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.status(200).json(updated);
   } catch (err) {
     res.status(500).json({ error: "Failed to update product" });
