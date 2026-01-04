@@ -23,9 +23,9 @@
       type="button"
       class="rounded bg-indigo-600 px-3 py-2 text-xs font-semibold text-white hover:bg-indigo-500 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
       [disabled]="product.stock === 0 || adding()"
-      (click)="addToCart($event)"
+      (click)="Details($event)"
     >
-      {{ adding() ? 'Wird hinzugefügt...' : 'In den Warenkorb' }}
+      {{ adding() ? 'Adding...' : 'Add to cart' }}
     </button>
     <span *ngIf="feedback()" class="ml-2 text-[11px] text-green-600">
       {{ feedback() }}

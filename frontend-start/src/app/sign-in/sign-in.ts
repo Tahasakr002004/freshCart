@@ -64,9 +64,9 @@ export class SignIn implements OnInit {
         console.error('[SignIn] login error:', err);
         this.submitting = false;
         if (err.status === 400 || err.status === 401) {
-          this.error = 'E-Mail oder Passwort ist falsch.';
+          this.error = 'Email or password is incorrect.';
         } else {
-          this.error = 'Login fehlgeschlagen. Bitte später erneut versuchen.';
+          this.error = 'Sign in failed. Please try again later.';
         }
       },
     });

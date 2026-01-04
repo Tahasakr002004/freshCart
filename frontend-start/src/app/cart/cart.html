@@ -1,14 +1,14 @@
 <div class="max-w-5xl mx-auto px-4 py-10">
-  <h1 class="text-2xl font-bold text-gray-900 mb-6">Warenkorb</h1>
+  <h1 class="text-2xl font-bold text-gray-900 mb-6">Cart</h1>
 
   @if (loading()) {
-    <p class="text-gray-500">Warenkorb wird geladen...</p>
+    <p class="text-gray-500">Loading cart...</p>
   } @else if (error()) {
     <p class="text-red-600">{{ error() }}</p>
   } @else if (items().length === 0) {
     <div class="rounded border border-dashed border-gray-300 p-6 text-gray-600">
-      <p class="mb-2">Dein Warenkorb ist leer.</p>
-      <a routerLink="/shop" class="text-indigo-600 hover:underline">Jetzt Produkte entdecken</a>
+      <p class="mb-2">Your cart is empty.</p>
+      <a routerLink="/shop" class="text-indigo-600 hover:underline">Browse products</a>
     </div>
   } @else {
     <div class="space-y-4">
@@ -24,7 +24,7 @@
             <div>
               <div class="font-semibold text-gray-900">{{ item.productName }}</div>
               <div class="text-gray-600 text-sm">
-                Einzelpreis: {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
+                Unit price: {{ item.unitPrice | currency:'USD':'symbol':'1.2-2' }}
               </div>
             </div>
 
@@ -53,7 +53,7 @@
                 class="text-sm text-red-600 hover:underline"
                 (click)="remove(item)"
               >
-                Entfernen
+                Remove
               </button>
             </div>
           </li>
@@ -62,7 +62,7 @@
 
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between bg-gray-50 rounded p-4 border border-gray-200">
         <div class="text-gray-700 font-medium">
-          Gesamt: <span class="text-gray-900 font-semibold">{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>
+          Total: <span class="text-gray-900 font-semibold">{{ total() | currency:'USD':'symbol':'1.2-2' }}</span>
         </div>
         <div class="flex items-center gap-3 mt-3 sm:mt-0">
           <button
@@ -70,13 +70,13 @@
             class="rounded border border-gray-300 px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
             (click)="clearCart()"
           >
-            Warenkorb leeren
+            Clear cart
           </button>
           <a
             routerLink="/checkout"
             class="rounded bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500 cursor-pointer text-center"
           >
-            Zur Kasse
+            Checkout
           </a>
         </div>
       </div>
