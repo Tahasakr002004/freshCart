@@ -20,43 +20,30 @@
         <!-- Wenn eingeloggt -->
         <ng-template #loggedIn>
 
-          <!-- USER view -->
-          <ng-container *ngIf="isUser; else adminView">
-            <a routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
+          <a *ngIf="isUser" routerLink="/dashboard" class="hover:text-gray-300">Dashboard</a>
 
-            <a routerLink="/cart" class="relative hover:text-gray-300 flex items-center">
-              Cart
-              <span
-                *ngIf="cartCount() > 0"
-                class="ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-indigo-500 px-1 text-xs font-semibold text-white"
-              >
-                {{ cartCount() }}
-              </span>
-            </a>
-
-            <a routerLink="/checkout" class="hover:text-gray-300">Checkout</a>
-
-            <span class="text-sm text-gray-300" *ngIf="user">
-              {{ user.firstName }} {{ user.lastName }}
+          <a *ngIf="isShopper" routerLink="/cart" class="relative hover:text-gray-300 flex items-center">
+            Cart
+            <span
+              *ngIf="cartCount() > 0"
+              class="ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-indigo-500 px-1 text-xs font-semibold text-white"
+            >
+              {{ cartCount() }}
             </span>
+          </a>
 
-            <button
-              (click)="logout()"
-              class="bg-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </ng-container>
+          <a *ngIf="isShopper" routerLink="/checkout" class="hover:text-gray-300">Checkout</a>
 
-          <!-- ADMIN view (only logout) -->
-          <ng-template #adminView>
-            <button
-              (click)="logout()"
-              class="bg-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-600"
-            >
-              Logout
-            </button>
-          </ng-template>
+          <span class="text-sm text-gray-300" *ngIf="displayName">
+            {{ displayName }}
+          </span>
+
+          <button
+            (click)="logout()"
+            class="bg-red-500 px-3 py-1 rounded-md text-sm hover:bg-red-600"
+          >
+            Logout
+          </button>
 
         </ng-template>
       </div>

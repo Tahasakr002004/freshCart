@@ -96,11 +96,36 @@ const validateAuth: RequestHandler = async (req: Request, res: Response, next: N
         return;
       }
 
+      const adminName = payload.adminName || "Admin";
+
       r.auth = {
         role: "admin",
         adminId: payload.id,
-        adminName: payload.adminName,
+        adminName,
       };
+
+      // Map admin tokens to a Mongo "shopper" user so cart/checkout can reuse user-based services.
+      try {
+        const adminKeySource = payload.id ?? adminName;
+        const adminKey = String(adminKeySource ?? "admin").replace(/[^a-zA-Z0-9_-]/g, "-");
+        const adminEmail = `admin-${adminKey}@freshcart.local`;
+
+        let adminUser = await userModel.findOne({ email: adminEmail });
+        if (!adminUser) {
+          adminUser = await userModel.create({
+            firstName: adminName,
+            lastName: "Admin",
+            email: adminEmail,
+            password: "",
+          });
+        }
+
+        r.user = adminUser;
+      } catch (err) {
+        console.error("[validateAuth] failed to load admin shopper user:", err);
+        res.status(500).json({ message: "Failed to initialize admin shopper profile" });
+        return;
+      }
 
       next();
       return;

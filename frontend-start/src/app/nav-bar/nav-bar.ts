@@ -16,12 +16,12 @@ export class NavBar {
   private readonly cart = inject(CartService);
 
   constructor() {
-    // ✅ only load cart if logged in as USER (prevents 403 for admin)
+    // Load cart for signed-in shoppers (user/admin).
     effect(() => {
       const token = this.auth.token();
       const role = this.auth.role();
 
-      if (token && role === 'user') {
+      if (token && (role === 'user' || role === 'admin')) {
         this.cart.loadCart();
       } else {
         this.cart.cart.set(null);
@@ -41,8 +41,28 @@ export class NavBar {
     return this.auth.role() === 'user';
   }
 
-  get user() {
-    return this.auth.currentUser();
+  get isAdmin(): boolean {
+    return this.auth.role() === 'admin';
+  }
+
+  get isShopper(): boolean {
+    return this.isUser || this.isAdmin;
+  }
+
+  get displayName(): string | null {
+    if (this.isUser) {
+      const user = this.auth.currentUser();
+      if (!user) return null;
+      return `${user.firstName} ${user.lastName}`.trim();
+    }
+
+    if (this.isAdmin) {
+      const admin = this.auth.currentAdmin();
+      if (!admin?.adminName) return 'Admin (admin)';
+      return `${admin.adminName} (admin)`;
+    }
+
+    return null;
   }
 
   logout(): void {
