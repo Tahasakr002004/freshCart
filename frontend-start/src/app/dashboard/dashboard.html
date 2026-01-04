@@ -4,18 +4,18 @@
 
     <!-- Loading-Status -->
     <div *ngIf="loading" class="dashboard-info">
-      <p>Lade Benutzerdaten ...</p>
+      <p>Loading user data ...</p>
     </div>
 
     <!-- User gefunden -->
     <div *ngIf="!loading && user" class="dashboard-content">
       <p class="dashboard-greeting">
-        Willkommen,
+        Welcome,
         <strong>{{ user.firstName }} {{ user.lastName }}</strong>!
       </p>
 
       <p class="dashboard-email">
-        E-Mail: <span>{{ user.email }}</span>
+        Email: <span>{{ user.email }}</span>
       </p>
 
       <div class="dashboard-actions">
@@ -27,7 +27,7 @@
 
     <!-- Kein User (Fallback, sollte durch Redirect kaum sichtbar sein) -->
     <div *ngIf="!loading && !user" class="dashboard-info">
-      <p>Keine gültige Sitzung. Du wirst zum Login weitergeleitet ...</p>
+      <p>No valid session. Redirecting to sign in ...</p>
     </div>
   </div>
 </div>

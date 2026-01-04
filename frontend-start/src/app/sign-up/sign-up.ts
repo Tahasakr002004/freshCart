@@ -58,9 +58,9 @@ export class SignUp {
         console.error('[SignUp] register error:', err);
         this.submitting = false;
         if (err.status === 409) {
-          this.error = 'Ein Benutzer mit dieser E-Mail existiert bereits.';
+          this.error = 'A user with this email already exists.';
         } else {
-          this.error = 'Registrierung fehlgeschlagen. Bitte später erneut versuchen.';
+          this.error = 'Registration failed. Please try again later.';
         }
       },
     });

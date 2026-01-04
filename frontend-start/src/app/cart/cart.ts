@@ -43,23 +43,23 @@ export class Cart_comp implements OnInit {
 
   remove(item: CartItem) {
     this.cartService.removeItem(item.product).subscribe({
-      next: (res) => this.handleResponse(res, 'Artikel entfernt'),
-      error: (err) => this.handleError(err, 'Konnte Artikel nicht entfernen'),
+      next: (res) => this.handleResponse(res, 'Item removed'),
+      error: (err) => this.handleError(err, 'Could not remove item'),
     });
   }
 
   clearCart() {
     this.cartService.clear().subscribe({
-      next: (res) => this.handleResponse(res, 'Warenkorb geleert'),
-      error: (err) => this.handleError(err, 'Konnte Warenkorb nicht leeren'),
+      next: (res) => this.handleResponse(res, 'Cart cleared'),
+      error: (err) => this.handleError(err, 'Could not clear cart'),
     });
   }
 
   private adjustQuantity(item: CartItem, quantity: number) {
     if (quantity < 1) quantity = 1;
     this.cartService.updateItem(item.product, quantity).subscribe({
-      next: (res) => this.handleResponse(res, 'Menge aktualisiert'),
-      error: (err) => this.handleError(err, 'Konnte Menge nicht ändern'),
+      next: (res) => this.handleResponse(res, 'Quantity updated'),
+      error: (err) => this.handleError(err, 'Could not update quantity'),
     });
   }
 
@@ -74,7 +74,7 @@ export class Cart_comp implements OnInit {
 
   private handleError(err: any, fallback: string) {
     console.error(err);
-    this.message.set(err?.status === 401 ? 'Bitte einloggen' : fallback);
+    this.message.set(err?.status === 401 ? 'Please sign in' : fallback);
     setTimeout(() => this.message.set(''), 2500);
   }
 }

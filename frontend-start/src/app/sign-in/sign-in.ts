@@ -89,10 +89,10 @@ export class SignIn implements OnInit {
         if (err.status === 400 || err.status === 401) {
           this.error =
             mode === 'admin'
-              ? 'Admin-Name oder Passwort ist falsch.'
-              : 'E-Mail oder Passwort ist falsch.';
+              ? 'Admin name or password is incorrect.'
+              : 'Email or password is incorrect.';
         } else {
-          this.error = 'Login fehlgeschlagen. Bitte später erneut versuchen.';
+          this.error = 'Sign in failed. Please try again later.';
         }
       },
     });

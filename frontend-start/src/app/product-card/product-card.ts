@@ -42,13 +42,13 @@ export class ProductCard {
 
     this.cart.addItem(this.product._id, 1).subscribe({
       next: (res) => {
-        this.feedback.set(typeof res === 'string' ? res : 'Zum Warenkorb hinzugefügt');
+        this.feedback.set(typeof res === 'string' ? res : 'Added to cart');
         this.adding.set(false);
         setTimeout(() => this.feedback.set(''), 2000);
       },
       error: (err) => {
         console.error('Add to cart failed', err);
-        this.feedback.set(err?.status === 401 ? 'Bitte zuerst einloggen' : 'Konnte nicht hinzufügen');
+        this.feedback.set(err?.status === 401 ? 'Please sign in first' : 'Could not add to cart');
         this.adding.set(false);
         setTimeout(() => this.feedback.set(''), 2500);
       }

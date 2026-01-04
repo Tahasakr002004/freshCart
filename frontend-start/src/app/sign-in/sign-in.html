@@ -1,13 +1,12 @@
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
     <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-      Anmelden
+      Sign in
     </h2>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-6">
-
       <!-- Login Mode Toggle -->
       <div class="flex items-center gap-4">
         <label class="inline-flex items-center gap-2 text-sm text-gray-700">
@@ -24,7 +23,7 @@
       <!-- Identifier (Email OR AdminName) -->
       <div>
         <label class="block text-sm font-medium text-gray-900">
-          {{ mode === 'admin' ? 'Admin Name' : 'E-Mail-Adresse' }}
+          {{ mode === 'admin' ? 'Admin name' : 'Email address' }}
         </label>
 
         <input
@@ -36,15 +35,15 @@
         <!-- Identifier Error -->
         <p *ngIf="f.identifier.touched && f.identifier.invalid" class="text-red-600 text-sm mt-1">
           {{ mode === 'admin'
-            ? 'Bitte gib einen Admin-Namen ein.'
-            : 'Bitte gib eine gültige E-Mail-Adresse ein.' }}
+            ? 'Please enter an admin name.'
+            : 'Please enter a valid email address.' }}
         </p>
       </div>
 
-      <!-- Passwort -->
+      <!-- Password -->
       <div>
         <label class="block text-sm font-medium text-gray-900">
-          Passwort
+          Password
         </label>
         <input
           type="password"
@@ -52,11 +51,11 @@
           class="block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         />
         <p *ngIf="f.password.touched && f.password.invalid" class="text-red-600 text-sm mt-1">
-          Passwort ist erforderlich (mind. 6 Zeichen).
+          Password is required (min. 6 characters).
         </p>
       </div>
 
-      <!-- Fehlermeldung vom Backend -->
+      <!-- Backend error -->
       <div *ngIf="error" class="text-red-600 text-sm">
         {{ error }}
       </div>
@@ -68,15 +67,15 @@
           [disabled]="submitting"
           class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 disabled:opacity-60"
         >
-          {{ submitting ? 'Anmelden...' : 'Anmelden' }}
+          {{ submitting ? 'Signing in...' : 'Sign in' }}
         </button>
       </div>
     </form>
 
     <p class="mt-4 text-center text-sm">
-      Noch kein Konto?
+      Don't have an account?
       <a routerLink="/sign-up" class="font-medium text-indigo-600 hover:text-indigo-500">
-        Registrieren
+        Sign up
       </a>
     </p>
 
